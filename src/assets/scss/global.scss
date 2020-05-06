@@ -1,0 +1,87 @@
+$primary: rgba(110,188,197,1);
+
+/* ----- 对字体样式进行设置 ----- */
+@font-face {
+    font-family: gilroy-bold;
+    src: url('~@/assets/fonts/Gilroy-Bold.ttf');
+    // src: url('https://maybe.azureedge.net/fonts/Gilroy-Bold.ttf');
+}
+@font-face {
+    font-family: gilroy-regular;
+    src: url('~@/assets/fonts/Gilroy-Regular.ttf');
+    // src: url('https://maybe.azureedge.net/fonts/Gilroy-Regular.ttf');
+}
+@font-face {
+    font-family: gilroy-semibold;
+    src: url('~@/assets/fonts/Gilroy-SemiBold.ttf');
+    // src: url('https://maybe.azureedge.net/fonts/Gilroy-SemiBold.ttf');
+}
+html,body,#app{
+    margin:0;
+    padding:0;
+    height:100%;
+    font-family: gilroy-regular;
+    color: #213248; 
+}
+h1,h2,h3,h4,h5,h6,th,tr,td,thead.tbody{
+    margin:0;
+    padding:0;
+}
+table{
+    border-collapse:collapse; /* 合并边框线，但是这个属性与border-radius冲突 */
+    /* border-collapse:separate; */
+}
+
+
+.container {
+    max-height: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media (min-width: 576px) {
+    .container {
+      max-width: 540px;
+    }
+  }
+  @media (min-width: 768px) {
+    .container {
+      max-width: 720px;
+    }
+  }
+  @media (min-width: 992px) {
+    .container {
+      max-width: 960px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 1140px;
+    }
+  }
+
+// Links
+a {
+  text-decoration: none;
+  color: #6ebcc5;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #429aa5;
+}
+
+a:focus {
+  text-decoration: underline;
+  color: #429aa5;
+  outline: none;
+}
+
+.simplebar-scrollbar::before {
+  background-color: gray !important;
+}
+
+.text-gray {
+  color: #61758E;
+}

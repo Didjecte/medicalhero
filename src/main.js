@@ -22,6 +22,7 @@ import 'simplebar/dist/simplebar.min.css'
 const token = window.localStorage.getItem('token')
 if (token) {
   axios.defaults.headers.common.Authorization = token
+  store.dispatch('reAuth', token)
 }
 axios.defaults.baseURL = 'https://www.medicalhero.fr/api/'
 // axios.defaults.baseURL = 'http://localhost:8444/'

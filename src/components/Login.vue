@@ -124,7 +124,7 @@ export default {
       const h = this.$createElement
       this.$notify({
         title: 'Connection échouée',
-        message: h('i', { style: 'color: rgba(110,188,197,1)' }, 'Email ou identifiant incorrect.'),
+        message: h('i', { style: 'color: rgba(110,188,197,1)' }, 'Email ou mot de passe incorrect.'),
         type: 'error',
         duration: 3500,
         showClose: false,
@@ -135,7 +135,6 @@ export default {
     },
     successNotif () {
       const h = this.$createElement
-      console.log(this.$store.getters.user)
       this.$notify({
         title: 'Connection réussie',
         message: h('i', { style: 'color: rgba(110,188,197,1)' }, 'Bienvenue ' + this.$store.getters.user.firstName),

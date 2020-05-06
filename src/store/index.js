@@ -67,6 +67,25 @@ export default new Vuex.Store({
         delete axios.defaults.headers.common.Authorization
         resolve()
       })
+    },
+    reAuth ({ commit }, token) {
+      return new Promise((resolve, reject) => {
+        commit('auth_request')
+        axios({ url: 'https://www.medicalhero.fr/api/user/', data: token, method: 'POST' })
+          .then(resp => {
+            const userId = resp.data.userId
+            const permission = +resp.data.permission
+            const userObj = resp.data.user
+            commit('auth_success', { token, userId, permission })
+            commit('set_user', userObj)
+          })
+          .catch(err => {
+            commit('auth_error')
+            commit('set_user', null)
+            window.localStorage.removeItem('token')
+            reject(err)
+          })
+      })
     }
   },
   getters: {

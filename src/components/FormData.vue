@@ -205,13 +205,13 @@
           <el-form :model="userForm" :rules="userFormRules" ref="userFormRef" class="el_form">
             <el-row type="flex" justify="center" align="middle" class="contact_input" :gutter="20">
               <el-col>
-                <el-form-item prop="lastName" label="Prénom">
-                  <el-input v-model="userForm.lastName"></el-input>
+                <el-form-item prop="firstName" label="Prénom">
+                  <el-input v-model="userForm.firstName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col>
-                <el-form-item prop="firstName" label="Nom">
-                  <el-input v-model="userForm.firstName"></el-input>
+                <el-form-item prop="lastName" label="Nom">
+                  <el-input v-model="userForm.lastName"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>

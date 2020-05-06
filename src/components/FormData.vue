@@ -378,7 +378,7 @@ export default {
     },
     /* 法国快递费——法国快递根据盒数计算对应金额(唯一的一个价格) */
     francePrice () {
-      var money = 99
+      var money = 0
       switch (this.num1 / 600 + this.num2 / 2000) {
         case 1: money = this.franceDeliveryPrice[0]
           break

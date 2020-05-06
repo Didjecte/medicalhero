@@ -61,7 +61,7 @@ export default {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     position: fixed;
     width: 100%;
-    z-index: 4000;
+    z-index: 3000;
   }
 
   .logo {

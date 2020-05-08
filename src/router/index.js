@@ -6,6 +6,7 @@ import NavMenu from '../components/NavMenu.vue'
 import Login from '../components/Login.vue'
 import Thank from '../components/Thank.vue'
 import AdminHome from '../components/admin/AdminHome.vue'
+import DealOne from '../components/admin/DealOne.vue'
 
 Vue.use(VueRouter)
 
@@ -18,7 +19,8 @@ const routes = [
       { path: '/devis', name: 'Devis', component: FormData },
       { path: '/validationDevis', name: 'ValidationDevis', component: Thank },
       { path: '/login', name: 'Login', component: Login },
-      { path: '/admin', name: 'Admin', component: AdminHome, meta: { requiresAuth: true } } // 添加该字段表示进入此路由需要登录
+      { path: '/admin', name: 'Admin', component: AdminHome, meta: { requiresAuth: true } }, // 添加该字段表示进入此路由需要登录
+      { path: '/deal', name: 'DealOne', component: DealOne, meta: { requiresAuth: true } }
     ]
   }
 ]

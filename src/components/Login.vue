@@ -34,12 +34,12 @@
               </div>
             </div>
           </el-form-item> -->
-           <el-form-item prop="email" label="email">
-                  <el-input v-model="userForm.email" type="email" id="email" name="email" auto-complete="email"></el-input>
-                </el-form-item>
-                 <el-form-item prop="password" label="password">
-                  <el-input v-model="userForm.password" type="password" id="password" name="password" auto-complete="current-password"></el-input>
-                </el-form-item>
+          <el-form-item prop="email" label="email">
+            <el-input v-model="userForm.email" type="email" id="email" name="email" auto-complete="email"></el-input>
+          </el-form-item>
+          <el-form-item prop="password" label="password">
+            <el-input v-model="userForm.password" type="password" id="password" name="password" auto-complete="current-password"></el-input>
+          </el-form-item>
           <el-form-item class="login_button">
             <el-button native-type="submit" type="primary" @click.stop.prevent="login()">Me connecter</el-button>
           </el-form-item>

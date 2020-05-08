@@ -91,7 +91,11 @@ export default {
           const password = this.userForm.password
           this.$store.dispatch('login', { mail, password })
             .then((resp) => {
-              this.$router.push('/admin')
+              if (resp.data.permission >= 512) {
+                this.$router.push('/admin')
+              } else {
+                this.$router.push('user')
+              }
               this.successNotif()
             })
             .catch((err) => {

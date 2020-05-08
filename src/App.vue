@@ -23,6 +23,7 @@ export default {
     })
   },
   mounted () {
+    console.log('now')
     this.el = SimpleBar.instances.get(document.querySelector('[data-simplebar]'))
   },
   updated () {

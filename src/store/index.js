@@ -78,6 +78,8 @@ export default new Vuex.Store({
             const userObj = resp.data.user
             commit('auth_success', { token, userId, permission })
             commit('set_user', userObj)
+            console.log('dispatch ' + permission)
+            resolve(resp)
           })
           .catch(err => {
             commit('auth_error')

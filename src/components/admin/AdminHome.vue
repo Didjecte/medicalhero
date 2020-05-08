@@ -6,14 +6,15 @@
 export default {
   data () {
     return {
-      tableData: [{}]
-      // tableData [{
-      //   contact: 'Didier HU',
-      //   company: 'MedicalHero',
-      //   stage: '1',
-      //   status: '',
-      //   dateStart: '06/05/2020'
-      // }]
+      name: 'AdminHome',
+      tableData: [{
+        contact: 'Didier HU',
+        company: 'MedicalHero',
+        stage: '1',
+        status: '',
+        dateStart: '06/05/2020'
+      }]
+      // tableData: [{}]
     }
   },
   computed: {

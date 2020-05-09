@@ -23,10 +23,15 @@ export default {
     })
   },
   mounted () {
-    this.el = SimpleBar.instances.get(document.querySelector('[data-simplebar]'))
+    this.$nextTick(function () {
+      this.el = SimpleBar.instances.get(document.querySelector('[data-simplebar]'))
+    })
   },
   updated () {
     this.$nextTick(function () {
+      if (!this.el) {
+        this.el = SimpleBar.instances.get(document.querySelector('[data-simplebar]'))
+      }
       this.el.getScrollElement().scrollTop = 0
     })
   }

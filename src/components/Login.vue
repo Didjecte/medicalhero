@@ -4,7 +4,7 @@
       <div class="box">
         <h3 >Mon espace personnel</h3>
         <el-form :model="userForm" :rules="userFormRules" ref="userFormRef" ><!-- label-width="80px"-->
-          <!-- <el-form-item prop="email">
+          <el-form-item prop="email">
             <div class="field">
               <el-input v-model="userForm.email" @focus="emailFocus=true" @blur="unfocus('email')" auto-complete="email" id="email" name="email"></el-input>
               <div class="floatLabel">
@@ -33,12 +33,6 @@
                 </transition>
               </div>
             </div>
-          </el-form-item> -->
-          <el-form-item prop="email" label="email">
-            <el-input v-model="userForm.email" type="email" id="email" name="email" auto-complete="email"></el-input>
-          </el-form-item>
-          <el-form-item prop="password" label="password">
-            <el-input v-model="userForm.password" type="password" id="password" name="password" auto-complete="current-password"></el-input>
           </el-form-item>
           <el-form-item class="login_button">
             <el-button native-type="submit" type="primary" @click.stop.prevent="login()">Me connecter</el-button>
@@ -90,10 +84,19 @@ export default {
           const mail = this.userForm.email
           const password = this.userForm.password
           this.$store.dispatch('login', { mail, password })
-            .then(() => {
-              this.$router.push('/admin')
+            .then((resp) => {
+              if (resp.data.permission >= 512) {
+                this.$router.push('/admin')
+              } else {
+                this.$router.push('/user')
+              }
+              // this.successNotif()
             })
-            .catch(err => console.log(err))
+            .catch((err) => {
+              if (err.response.status === 401 || err.response.status === 404) {
+                this.errorNotif()
+              }
+            })
         }
       })
     },
@@ -114,6 +117,32 @@ export default {
           }
         })
         .catch(err => console.log(err))
+    },
+    errorNotif () {
+      const h = this.$createElement
+      this.$notify({
+        title: 'Connection échouée',
+        message: h('i', { style: 'color: rgba(110,188,197,1)' }, 'Email ou mot de passe incorrect.'),
+        type: 'error',
+        duration: 3500,
+        showClose: false,
+        onClick: function () {
+          this.close()
+        }
+      })
+    },
+    successNotif () {
+      const h = this.$createElement
+      this.$notify({
+        title: 'Connection réussie',
+        message: h('i', { style: 'color: rgba(110,188,197,1)' }, 'Bienvenue ' + this.$store.getters.user.firstName),
+        type: 'success',
+        duration: 3500,
+        showClose: false,
+        onClick: function () {
+          this.close()
+        }
+      })
     }
   }
 }

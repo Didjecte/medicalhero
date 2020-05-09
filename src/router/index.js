@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
+import axios from 'axios'
 import FormData from '../components/FormData.vue'
 import NavMenu from '../components/NavMenu.vue'
 import Login from '../components/Login.vue'
 import Thank from '../components/Thank.vue'
 import AdminHome from '../components/admin/AdminHome.vue'
+import UserHome from '../components/user/UserHome.vue'
 
 Vue.use(VueRouter)
 
@@ -17,8 +19,24 @@ const routes = [
       { path: '/', redirect: '/login' },
       { path: '/devis', name: 'Devis', component: FormData },
       { path: '/validationDevis', name: 'ValidationDevis', component: Thank },
-      { path: '/login', name: 'Login', component: Login },
-      { path: '/admin', name: 'Admin', component: AdminHome, meta: { requiresAuth: true } } // 添加该字段表示进入此路由需要登录
+      {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+        beforeEnter
+      },
+      {
+        path: '/user',
+        name: 'User',
+        component: UserHome,
+        beforeEnter
+      },
+      {
+        path: '/admin',
+        name: 'Admin',
+        component: AdminHome,
+        beforeEnter
+      }
     ]
   }
 ]
@@ -29,19 +47,55 @@ const router = new VueRouter({
   routes
 })
 
-// 挂载路由导航守卫
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) { // 判断当前路由是否需要权限
-    if (store.getters.isLoggedIn) { // 判断当前是否存在token
-      next()
+async function beforeEnter (to, from, next) {
+  try {
+    if (window.localStorage.getItem('token')) {
+      if (store.getters.permission !== 0) {
+        if (store.getters.permission < 512 && store.getters.permission >= 2) {
+          if (to.path !== '/user') {
+            next('/user')
+          } else {
+            next()
+          }
+        } else {
+          if (to.path !== '/admin') {
+            next('/admin')
+          } else {
+            next()
+          }
+        }
+      } else {
+        axios.defaults.headers.common.Authorization = window.localStorage.getItem('token')
+        var hasPermission = await store.dispatch('reAuth')
+        if (hasPermission.data.permission < 512 && store.getters.permission >= 2) {
+          if (to.path !== '/user') {
+            next('/user')
+          } else {
+            next()
+          }
+        } else {
+          if (to.path !== '/admin') {
+            next('/admin')
+          } else {
+            next()
+          }
+        }
+      }
     } else {
-      next({
-        path: '/login'
-      })
+      if (to.path !== '/login') {
+        next('/login')
+      } else {
+        next()
+      }
     }
-  } else {
-    next()
+  } catch (e) {
+    console.log(e)
+    if (to.path !== '/login') {
+      next('/login')
+    } else {
+      next()
+    }
   }
-})
+}
 
 export default router

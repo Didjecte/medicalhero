@@ -30,10 +30,13 @@
       <el-steps :active="active" finish-status="success" align-center><!--  -->
         <el-step title="Quote" description="waiting/to do"></el-step>
         <el-step title="Bill 1" description="waiting/to do"></el-step>
-        <el-step title="Shipping" description="waiting/to do"></el-step>
+        <el-step title="Shipping" description="waiting/to do" status="process"></el-step>
         <el-step title="Bill 2" description="waiting/to do"></el-step>
         <el-step title="Closed" description="waiting/to do"></el-step>
       </el-steps>
+      <el-tooltip :value="true" class="item" effect="dark" content="Bottom Center prompts info" placement="bottom">
+        <span style="pointer-events:none;">bottom</span>
+      </el-tooltip>
     </div>
     <!--表单+表格-->
     <div class="deal_form">
@@ -127,7 +130,7 @@ export default {
   name: 'DealOne',
   data () {
     return {
-      active: 1,
+      active: 3,
       num1: 2000,
       num2: 0.86,
       num3: 0
@@ -260,4 +263,8 @@ export default {
     }
   }
 
+  .el-tooltip__popper {
+    pointer-events: none !important;
+    color:black;
+  }
 </style>

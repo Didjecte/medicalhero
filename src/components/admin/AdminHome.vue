@@ -1,7 +1,7 @@
 <template>
   <div class="container context_top">
     <h1 style="margin:30px 0;">Dashboard Admin</h1>
-    <el-button type="primary" style="margin:60px 0 60px 0;">Primary</el-button>
+    <router-link to="/deal"><el-button type="primary" style="margin:60px 0 60px 0;">Primary</el-button></router-link>
     <div>
       <el-table
         :data="tableData"

@@ -6,10 +6,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    status: '',
+    status: '', /* 请求的状态 */
     token: window.localStorage.getItem('token') || '',
-    userId: '',
-    permission: 0,
+    userId: '', /* 用户的ID */
+    permission: 0, /* 账户0什么都不能做 账户1做少东西 账户2做很多东西 */
+    /* 用户后台1，超级管理员2，啥都不是为0跳回表单 */
     user: null
   },
   mutations: {

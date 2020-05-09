@@ -8,7 +8,8 @@
               Stop-covid19.fr
             </router-link>
           </span>
-          <div v-if="!connected">
+          <!-- not connected -->
+          <div v-if="!this.$store.getters.permission >= 2">
             <el-menu :default-active="activeIndex"
               :router="true"
               mode="horizontal"
@@ -22,22 +23,26 @@
               </el-submenu>
             </el-menu>
           </div>
-          <div v-if="isUser">
+          <!-- user -->
+          <div v-if="this.$store.getters.permission < 512 && this.$store.getters.permission >= 2">
             <el-menu :default-active="activeIndex2"
               :router="true"
               mode="horizontal"
               menu-trigger="click" style="float:right">
+                <el-menu-item index="/devis" route="/devis" class="hidden-xs-only">Devis</el-menu-item>
               <el-menu-item index="/user" route="/user" class="hidden-xs-only">Commandes</el-menu-item>
               <el-menu-item @click="logout" index="/logout" class="hidden-xs-only">Logout</el-menu-item>
               <el-submenu index="/" class="hidden-sm-and-up">
                 <template slot="title"><el-button plain class="el-icon-more"></el-button></template>
-              <el-menu-item index="/user" route="/user">Commandes</el-menu-item>
+                <el-menu-item index="/devis" route="/devis">Devis</el-menu-item>
+                <el-menu-item index="/user" route="/user">Commandes</el-menu-item>
                 <el-menu-item @click="logout" index="/logout">Logout</el-menu-item>
               </el-submenu>
             </el-menu>
           </div>
-          <div v-if="isAdmin">
-            <el-menu :default-active="activeIndex"
+          <!-- admin -->
+          <div v-if="this.$store.getters.permission >= 512">
+            <el-menu :default-active="activeIndex2"
               :router="true"
               mode="horizontal"
               menu-trigger="click" style="float:right">
@@ -45,7 +50,6 @@
               <el-menu-item @click="logout" index="/logout" class="hidden-xs-only">Logout</el-menu-item>
               <el-submenu index="/" class="hidden-sm-and-up">
                 <template slot="title"><el-button plain class="el-icon-more"></el-button></template>
-                <el-menu-item index="/devis" route="/devis">Devis</el-menu-item>
                 <el-menu-item index="/admin" route="/admin">Dashboard</el-menu-item>
                 <el-menu-item @click="logout" index="/logout">Logout</el-menu-item>
               </el-submenu>
@@ -71,24 +75,22 @@ export default {
   data () {
     return {
       activeIndex: null,
-      activeIndex2: null,
+      activeIndex2: '/admin',
       logo: require('../assets/images/medicalHeroLogo.png')
     }
   },
   computed: {
     connected () {
+      console.log('permission ' + this.$store.getters.permission)
       return (this.$store.getters.permission >= 2)
-    },
-    isAdmin () {
-      return (this.$store.getters.permission >= 512)
-    },
-    isUser () {
-      return (this.$store.getters.permission < 512 && this.$store.getters.permission >= 2)
     }
   },
   mounted: function () {
-    this.activeIndex = this.$route.path
-    this.activeIndex2 = this.$route.path
+    this.$nextTick(function () {
+      this.activeIndex = this.$route.path
+      this.activeIndex2 = this.$route.path
+      console.log('rotuepath' + this.$route.path)
+    })
   },
   methods: {
     logout () {
@@ -106,6 +108,7 @@ export default {
     $route (to, from) {
       console.log(to.path)
       this.activeIndex = to.path
+      this.activeIndex2 = to.path
     }
   }
 }

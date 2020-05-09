@@ -42,7 +42,7 @@
               mode="horizontal"
               menu-trigger="click" style="float:right">
               <el-menu-item index="/admin" route="/admin" class="hidden-xs-only">Dashboard</el-menu-item>
-              <el-menu-item @click="logout" index="/logout">Logout</el-menu-item>
+              <el-menu-item @click="logout" index="/logout" class="hidden-xs-only">Logout</el-menu-item>
               <el-submenu index="/" class="hidden-sm-and-up">
                 <template slot="title"><el-button plain class="el-icon-more"></el-button></template>
                 <el-menu-item index="/devis" route="/devis">Devis</el-menu-item>

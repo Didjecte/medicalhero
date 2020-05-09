@@ -78,7 +78,6 @@ export default new Vuex.Store({
             const userObj = resp.data.user
             commit('auth_success', { token, userId, permission })
             commit('set_user', userObj)
-            console.log('dispatch ' + permission)
             resolve(resp)
           })
           .catch(err => {
@@ -94,7 +93,8 @@ export default new Vuex.Store({
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     permission: state => state.permission,
-    user: state => state.user
+    user: state => state.user,
+    token: state => state.token
   },
   modules: {
   }

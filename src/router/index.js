@@ -19,41 +19,24 @@ const routes = [
       { path: '/', redirect: '/login' },
       { path: '/devis', name: 'Devis', component: FormData },
       { path: '/validationDevis', name: 'ValidationDevis', component: Thank },
-      { path: '/login', name: 'Login', component: Login },
-      { path: '/user', name: 'User', component: UserHome },
+      {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+        beforeEnter
+      },
+      {
+        path: '/user',
+        name: 'User',
+        component: UserHome,
+        beforeEnter
+      },
       {
         path: '/admin',
         name: 'Admin',
         component: AdminHome,
-        async beforeEnter (to, from, next) {
-          try {
-            console.log(to.path)
-            if (store.state.token) {
-              if (store.getters.permission !== 0) {
-                if (store.getters.permission >= 512) {
-                  next()
-                } else {
-                  next('/user')
-                }
-              } else {
-                axios.defaults.headers.common.Authorization = window.localStorage.getItem('token')
-                console.log('redo')
-                var hasPermission = await store.dispatch('reAuth')
-                if (hasPermission.data.permission >= 512) {
-                  next()
-                } else {
-                  next('/user')
-                }
-              }
-            } else {
-              next('/login')
-            }
-          } catch (e) {
-            console.log(e)
-            next('/login')
-          }
-        }
-      } // 添加该字段表示进入此路由需要登录
+        beforeEnter
+      }
     ]
   }
 ]
@@ -64,100 +47,55 @@ const router = new VueRouter({
   routes
 })
 
-// 挂载路由导航守卫
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requiresAdmin)) { // 判断当前路由是否需要权限
-//     if (store.getters.isLoggedIn) { // 判断当前是否存在token
-//       if (store.getters.permission === 0) {
-//         store.dispatch('reAuth', window.localStorage.getItem('token'))
-//           .then((x) => {
-//             if (store.getters.permission >= 512) { // (1000000000)
-//               next()
-//             } else {
-//               console.log('admin!' + store.getters.permission)
-//               next('/user')
-//             }
-//           })
-//       } else {
-//         if (store.getters.permission >= 512) { // (1000000000)
-//           next()
-//         } else {
-//           console.log('admin2!' + store.getters.permission)
-//           next('/user')
-//         }
-//       }
-//     } else {
-//       next('/login')
-//     }
-//   } else {
-//     console.log('test')
-//     next()
-//   }
-
-//   if (to.matched.some((record) => record.meta.requiresUser)) { // 判断当前路由是否需要权限
-//     if (store.getters.isLoggedIn) { // 判断当前是否存在token
-//       if (store.getters.permission === 0) {
-//         store.dispatch('reAuth', window.localStorage.getItem('token'))
-//           .then(() => {
-//             if (store.getters.permission < 512) { // (1000000000)
-//               next()
-//             } else {
-//               console.log('user!' + store.getters.permission)
-//               next('/admin')
-//             }
-//           })
-//       } else {
-//         if (store.getters.permission < 512) { // (1000000000)
-//           next()
-//         } else {
-//           console.log('admiN!')
-//           next('/admin')
-//         }
-//       }
-//     } else {
-//       next('/login')
-//     }
-//   } else {
-//     next()
-//   }
-
-//   if (to.matched.some((record) => record.meta.notConnected)) { // 判断当前路由是否需要权限
-//     if (store.getters.isLoggedIn) { // 判断当前是否存在token
-//       if (store.getters.permission === 0) {
-//         store.dispatch('reAuth', window.localStorage.getItem('token'))
-//           .then(() => {
-//             if (store.getters.permission >= 512) { // (1000000000)
-//               next('/admin')
-//             } else {
-//               console.log('connected!' + store.getters.permission)
-//               next('/user')
-//             }
-//           })
-//       } else {
-//         if (store.getters.permission >= 512) { // (1000000000)
-//           next('/admin')
-//         } else {
-//           next('/user')
-//         }
-//       }
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
-
-//   if (to.matched.some((record) => record.meta.requiresAuth)) { // 判断当前路由是否需要权限
-//     if (store.getters.isLoggedIn) { // 判断当前是否存在token
-//       next()
-//     } else {
-//       next({
-//         path: '/login'
-//       })
-//     }
-//   } else {
-//     next()
-//   }
-// })
+async function beforeEnter (to, from, next) {
+  try {
+    if (window.localStorage.getItem('token')) {
+      if (store.getters.permission !== 0) {
+        if (store.getters.permission < 512 && store.getters.permission >= 2) {
+          if (to.path !== '/user') {
+            next('/user')
+          } else {
+            next()
+          }
+        } else {
+          if (to.path !== '/admin') {
+            next('/admin')
+          } else {
+            next()
+          }
+        }
+      } else {
+        axios.defaults.headers.common.Authorization = window.localStorage.getItem('token')
+        var hasPermission = await store.dispatch('reAuth')
+        if (hasPermission.data.permission < 512 && store.getters.permission >= 2) {
+          if (to.path !== '/user') {
+            next('/user')
+          } else {
+            next()
+          }
+        } else {
+          if (to.path !== '/admin') {
+            next('/admin')
+          } else {
+            next()
+          }
+        }
+      }
+    } else {
+      if (to.path !== '/login') {
+        next('/login')
+      } else {
+        next()
+      }
+    }
+  } catch (e) {
+    console.log(e)
+    if (to.path !== '/login') {
+      next('/login')
+    } else {
+      next()
+    }
+  }
+}
 
 export default router

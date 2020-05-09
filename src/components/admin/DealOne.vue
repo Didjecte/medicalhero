@@ -27,13 +27,17 @@
     </div>
     <!--步骤条-->
     <div class="deal_step">
-      <el-steps :active="active" finish-status="success" align-center><!--  -->
-        <el-step title="Quote" description="waiting/to do"></el-step>
-        <el-step title="Bill 1" description="waiting/to do"></el-step>
-        <el-step title="Shipping" description="waiting/to do"></el-step>
-        <el-step title="Bill 2" description="waiting/to do"></el-step>
-        <el-step title="Closed" description="waiting/to do"></el-step>
+      <el-steps :active="active" finish-status="success" align-center>
+        <!-- error是红色，success是绿色，finish是主题色，wait是等待下一步的灰色，process是--><!--success process wait-->
+        <el-step title="Quote" :description="status_1 === 'process' ? 'waiting/to do' : ''" :status="status_1"></el-step><!---->
+        <el-step title="Bill 1" :description="status_2 === 'process' ? 'waiting/to do' : ''" :status="status_2"></el-step><!---->
+        <el-step title="Shipping" :description="status_3 === 'process' ? 'waiting/to do' : ''" :status="status_3"></el-step><!---->
+        <el-step title="Bill 2" :description="status_4 === 'process' ? 'waiting/to do' : ''" :status="status_4"></el-step><!---->
+        <el-step title="Closed" :description="status_5 === 'process' ? 'waiting/to do' : ''" :status="status_5"></el-step><!---->
       </el-steps>
+      <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+        {{desc}}
+      </el-tooltip>
     </div>
     <!--表单+表格-->
     <div class="deal_form">
@@ -127,15 +131,54 @@ export default {
   name: 'DealOne',
   data () {
     return {
-      active: 1,
+      active: 0,
       num1: 2000,
       num2: 0.86,
-      num3: 0
+      num3: 0,
+      status_1: '',
+      status_2: '',
+      status_3: '',
+      status_4: '',
+      status_5: ''
     }
   },
   methods: {
     next () {
-      if (this.active++ > 4) this.active = 1
+      /* if (this.active++ > 4) this.active = 1 */
+      this.active++
+      if (this.active === 1) {
+        this.status_1 = 'process'/*  */
+        this.status_2 = 'wait'
+        this.status_3 = 'wait'
+        this.status_4 = 'wait'
+        this.status_5 = 'wait'
+      } else if (this.active === 2) {
+        this.status_1 = 'success'
+        this.status_2 = 'process'
+        this.status_3 = 'wait'
+        this.status_4 = 'wait'
+        this.status_5 = 'wait'
+      } else if (this.active === 3) {
+        this.status_1 = 'success'
+        this.status_2 = 'success'
+        this.status_3 = 'process'
+        this.status_4 = 'wait'
+        this.status_5 = 'wait'
+      } else if (this.active === 4) {
+        this.status_1 = 'success'
+        this.status_2 = 'success'
+        this.status_3 = 'success'
+        this.status_4 = 'process'
+        this.status_5 = 'wait'
+      } else if (this.active === 5) {
+        this.status_1 = 'success'
+        this.status_2 = 'success'
+        this.status_3 = 'success'
+        this.status_4 = 'success'
+        this.status_5 = 'process'
+      } else {
+        this.active = 1
+      }
     }
   }
 }
@@ -182,6 +225,7 @@ export default {
     .el-step__line-inner{
       border-width:2px!important;
       border-color: black;
+      transition-delay: 0ms!important;
     }
     .el-step__head.is-success{
       color:black;

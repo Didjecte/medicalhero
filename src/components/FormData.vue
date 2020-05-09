@@ -45,11 +45,11 @@
             <div>
               <p style="color:gray;font-size:12px;"><i style="margin-right:5px;" class="el-icon-warning-outline"></i><i>Si vous avez besoin de plus de masques que nous pouvons en acheter, veuillez nous appeler directement.</i></p>
             </div>
-            <div>
+            <!-- <div>
               <p style="font-size:12px"><el-checkbox v-model="flag">
                 Service Urgence Express:</el-checkbox> Réception sous 2j de 10% maximum de la commande dans la limite du stock disponible.
               </p>
-            </div>
+            </div> -->
             <el-collapse-transition>
               <div v-show="flag">
                 <div class="c_side">
@@ -117,26 +117,20 @@
                 <td class="t_num">{{ffp2Total | currency}}</td>
               </tr>
               <tr><!--完成-->
-                <td class="t_date">Livraison internationale - Masques chirurgicaux</td>
-                <td class="t_center">{{num2}}</td>
-                <td class="t_center">{{chrgDeliveryPrice}}</td>
+                <td class="t_date">Livraison - Masques chirurgicaux</td>
+                <td class="t_center"></td>
+                <td class="t_center"></td>
                 <td class="t_num">{{nationChrg | currency}}</td>
               </tr>
               <tr><!--完成-->
-                <td class="t_date">Livraison internationale - Masques FFP2</td>
-                <td class="t_center">{{num1}}</td>
-                <td class="t_center">{{ffp2DeliveryPrice}}</td>
-                <td class="t_num">{{nationFFP2 | currency}}</td>
-              </tr>
-              <tr>
-                <td class="t_date">Livraison France</td>
-                <td class="t_center">{{num3}}</td>
+                <td class="t_date">Livraison - Masques FFP2</td>
                 <td class="t_center"></td>
-                <td class="t_num">{{francePrice |currency}}</td>
+                <td class="t_center"></td>
+                <td class="t_num">{{nationFFP2 | currency}}</td>
               </tr>
             </tbody>
           </table>
-          <el-collapse-transition>
+          <!-- <el-collapse-transition>
             <div v-show="flag">
               <table>
                 <tbody>
@@ -161,7 +155,7 @@
                 </tbody>
               </table>
             </div>
-          </el-collapse-transition>
+          </el-collapse-transition> -->
           <table style="border-bottom: 1px solid rgba(232, 232, 232, 1)">
             <tbody>
               <tr>
@@ -272,8 +266,8 @@ export default {
       price1: [1, 2, 3, 4],
       price2: [1, 2, 3, 4, 5],
       /*  国际和法国两个快递 */
-      ffp2DeliveryPrice: 99, // ffp2_国际快递费
-      chrgDeliveryPrice: 0, // 医用_国际快递费
+      ffp2DeliveryPrice: [], // ffp2_国际快递费
+      chrgDeliveryPrice: [], // 医用_国际快递费
       franceDeliveryPrice: [], // 法国快递数组费
       /* 超级快递中口罩数量 */
       express_ffp2: 0, // 10个10个一加
@@ -325,7 +319,7 @@ export default {
     },
     /* ffp2口罩单价 */
     ffp2Price () {
-      var ffpMoney
+      let ffpMoney
       if (this.num1 >= 1000000) {
         ffpMoney = this.price1[3]
       } else if (this.num1 >= 100000) {
@@ -339,10 +333,8 @@ export default {
     },
     /* 医用口罩单价 */
     chrgPrice () {
-      var chrgMoney
-      if (this.num2 >= 10000000) {
-        chrgMoney = this.price2[4]
-      } else if (this.num2 >= 1000000) {
+      let chrgMoney
+      if (this.num2 >= 1000000) {
         chrgMoney = this.price2[3]
       } else if (this.num2 >= 100000) {
         chrgMoney = this.price2[2]
@@ -363,11 +355,31 @@ export default {
     },
     /* ffp2 国际快递总金额 */
     nationFFP2 () {
-      return this.num1 * this.ffp2DeliveryPrice
+      let ffpMoney = 0
+      if (this.num1 >= 1000000) {
+        ffpMoney = this.ffp2DeliveryPrice[3]
+      } else if (this.num1 >= 100000) {
+        ffpMoney = this.ffp2DeliveryPrice[2]
+      } else if (this.num1 >= 10000) {
+        ffpMoney = this.ffp2DeliveryPrice[1]
+      } else if (this.num1 >= 600) {
+        ffpMoney = this.ffp2DeliveryPrice[0]
+      }
+      return ffpMoney
     },
     /* 医用 国际快递总金额 */
     nationChrg () {
-      return this.num2 * this.chrgDeliveryPrice
+      let chrgMoney = 0
+      if (this.num2 >= 1000000) {
+        chrgMoney = this.chrgDeliveryPrice[3]
+      } else if (this.num2 >= 100000) {
+        chrgMoney = this.chrgDeliveryPrice[2]
+      } else if (this.num2 >= 20000) {
+        chrgMoney = this.chrgDeliveryPrice[1]
+      } else if (this.num2 >= 2000) {
+        chrgMoney = this.chrgDeliveryPrice[0]
+      }
+      return chrgMoney
     },
     nationTotal () {
       return this.nationFFP2 + this.nationChrg
@@ -378,7 +390,7 @@ export default {
     },
     /* 法国快递费——法国快递根据盒数计算对应金额(唯一的一个价格) */
     francePrice () {
-      var money = 0
+      let money = 0
       switch (this.num1 / 600 + this.num2 / 2000) {
         case 1: money = this.franceDeliveryPrice[0]
           break
@@ -422,19 +434,19 @@ export default {
     },
     /* 总价 */
     total_HT () {
-      if (this.flag === true) { /* 加超级快递 */
-        return this.ffp2Total + this.chrgTotal + this.nationFFP2 + this.nationChrg + this.francePrice + this.expressTotalFFP2 + this.expressTotalChrg + this.express
+      if (this.flag) { /* 加超级快递 */
+        return this.ffp2Total + this.chrgTotal + this.nationFFP2 + this.nationChrg + this.expressTotalFFP2 + this.expressTotalChrg + this.express
       } else { /* 不加超级快递 */
-        return this.ffp2Total + this.chrgTotal + this.nationFFP2 + this.nationChrg + this.francePrice
+        return this.ffp2Total + this.chrgTotal + this.nationFFP2 + this.nationChrg
       }
     },
     /* 纳税 */
     total_TVA () {
-      return this.total_HT * 0.2
+      return this.total_HT * 0.055
     },
     /* 最终金额 */
     total_TTC () {
-      return this.total_HT * 1.2
+      return this.total_HT * 1.055
     },
     /* 选择超级快递之后ffp2和chrg的可选最大值 */
     ffp2_max () {
@@ -459,8 +471,8 @@ export default {
     getPrice () {
       this.$http.get('https://www.medicalhero.fr/api/info').then((res) => {
         if (res.status === 200) {
-          this.ffp2DeliveryPrice = res.data.ffp2DeliveryPrice * 0.01 // ffp2_国际快递费
-          this.chrgDeliveryPrice = res.data.chrgDeliveryPrice * 0.01 // 医用_国际快递费
+          this.ffp2DeliveryPrice = res.data.ffp2DeliveryPrice // ffp2_国际快递费
+          this.chrgDeliveryPrice = res.data.chrgDeliveryPrice // 医用_国际快递费
           this.franceDeliveryPrice = res.data.franceDeliveryPrice // 法国快递费——数组（与盒数有关）
           this.price1 = res.data.ffp2Price // ffp2单价——数组
           this.price2 = res.data.chrgPrice // 医用口罩单价——数组
@@ -471,9 +483,9 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$http.post('user/register', {
-            firstName: this.userForm.firstName,
-            lastName: this.userForm.lastName,
-            company: this.userForm.company,
+            firstName: this.capitalLetter(this.userForm.firstName),
+            lastName: this.capitalLetter(this.userForm.lastName),
+            company: this.capitalLetter(this.userForm.company),
             phone: this.userForm.telephone,
             mail: this.userForm.to
           }).then((resp) => {
@@ -482,8 +494,8 @@ export default {
             // send mail
             this.$http.post('email/sendSummary', {
               to: this.userForm.to, // 邮箱
-              firstName: this.userForm.firstName,
-              lastName: this.userForm.lastName,
+              firstName: this.capitalLetter(this.userForm.firstName),
+              lastName: this.capitalLetter(this.userForm.lastName),
               ffp2: this.num1, // ffp2口罩数量
               chrg: this.num2, // 医用口罩数量
               ffp2Price: this.ffp2Total + '€', // ffp2价格(×)
@@ -525,6 +537,15 @@ export default {
     },
     change2 () {
       this.express_chrg = this.num2 * 0.1 < this.express_chrg ? this.num2 * 0.1 : this.express_chrg
+    },
+    capitalLetter (str) {
+      str = str.split(' ')
+
+      for (var i = 0, x = str.length; i < x; i++) {
+        str[i] = str[i][0].toUpperCase() + str[i].substr(1)
+      }
+
+      return str.join(' ')
     }
   }
 }

@@ -9,7 +9,7 @@
             </router-link>
           </span>
           <!-- not connected -->
-          <div v-if="!this.$store.getters.permission >= 2">
+          <div v-if="!(this.$store.getters.permission >= 2)">
             <el-menu :default-active="activeIndex"
               :router="true"
               mode="horizontal"
@@ -81,7 +81,6 @@ export default {
   },
   computed: {
     connected () {
-      console.log('permission ' + this.$store.getters.permission)
       return (this.$store.getters.permission >= 2)
     }
   },
@@ -89,7 +88,6 @@ export default {
     this.$nextTick(function () {
       this.activeIndex = this.$route.path
       this.activeIndex2 = this.$route.path
-      console.log('rotuepath' + this.$route.path)
     })
   },
   methods: {
@@ -97,7 +95,6 @@ export default {
       this.$store.dispatch('logout')
         .then(() => {
           if (this.$router.currentRoute.path !== '/login') {
-            console.log('test')
             this.$router.push('/login')
           }
         })
@@ -106,7 +103,6 @@ export default {
   },
   watch: {
     $route (to, from) {
-      console.log(to.path)
       this.activeIndex = to.path
       this.activeIndex2 = to.path
     }

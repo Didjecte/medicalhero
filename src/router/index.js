@@ -8,6 +8,7 @@ import Login from '../components/Login.vue'
 import Thank from '../components/Thank.vue'
 import AdminHome from '../components/admin/AdminHome.vue'
 import UserHome from '../components/user/UserHome.vue'
+import NotFound from '../components/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,11 @@ const routes = [
         name: 'Admin',
         component: AdminHome,
         beforeEnter
+      },
+      {
+        path: '*',
+        name: 'NotFound',
+        component: NotFound
       }
     ]
   }

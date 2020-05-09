@@ -6,8 +6,9 @@ import ElementUI from 'element-ui'
 import VueRouter from 'vue-router'
 import vueHeadful from 'vue-headful' // titles
 // import 'element-ui/lib/theme-chalk/index.css'
-import '../src/assets/scss/index.css' // custom theme colors
+import '../src/assets/scss/index.css' // custom theme colors(主题色)
 import 'element-ui/lib/theme-chalk/display.css'
+import locale from '../node_modules/element-ui/lib/locale/lang/en' /* 切换成英文版 */
 import '../src/assets/scss/global.scss'
 import axios from 'axios'
 import { currency } from './util/currency' // 全局过滤器的使用
@@ -31,7 +32,7 @@ axios.defaults.baseURL = 'https://www.medicalhero.fr/api/'
 
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
-Vue.use(ElementUI)
+Vue.use(ElementUI, { locale }) /* 成功切换成英文版本 */
 Vue.use(VueRouter)
 Vue.component('vue-headful', vueHeadful)
 Vue.component('simplebar', simplebar)

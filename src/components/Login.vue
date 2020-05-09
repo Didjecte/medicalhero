@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <vue-headful
+      title="MedicalHero - Connexion"
+      description="Connectez vous à votre espace personnel pour suivre votre commande."
+      />
     <div id="login">
       <div class="box">
         <h3 >Mon espace personnel</h3>
@@ -90,7 +94,7 @@ export default {
               } else {
                 this.$router.push('/user')
               }
-              // this.successNotif()
+              this.successNotif()
             })
             .catch((err) => {
               if (err.response.status === 401 || err.response.status === 404) {

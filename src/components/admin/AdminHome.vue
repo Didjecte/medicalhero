@@ -1,16 +1,19 @@
 <template>
   <div class="container context_top">
+    <vue-headful
+      title="MedicalHero - Dashboard"
+      />
     <h1 style="margin:30px 0;">Dashboard Admin</h1>
-    <el-button type="primary" style="margin:60px 0 60px 0;">Primary</el-button>
+    <el-button type="primary" style="margin:30px 0 20px 0;">Créer un Deal</el-button>
     <div>
       <el-table
         :data="tableData"
         :default-sort = "{prop: 'dateStart', order: 'descending'}"
         style="width: 100%"
       ><!--prop按照date进行排序，order中的descending降序、ascending升序-->
-        <el-table-column prop="content" label="content" sortable></el-table-column>
-        <el-table-column prop="company" label="company" sortable></el-table-column>
-        <el-table-column prop="stage" label="stage"
+        <el-table-column prop="contact" label="Contact" sortable></el-table-column>
+        <el-table-column prop="company" label="Company" sortable></el-table-column>
+        <el-table-column prop="stage" label="Stage"
                          :filters="[{ text: '1-quote', value: '1-quote' }, { text: '2-invoice', value: '2-invoice' }]"
                          :filter-method="filterStage"
                          filter-placement="bottom-end">
@@ -20,7 +23,7 @@
               disable-transitions>{{scope.row.stage}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="status"
+        <el-table-column prop="status" label="Status"
                          :filters="[{ text: 'waiting', value: 'waiting' }, { text: 'to do', value: 'to do' }]"
                          :filter-method="filterStatus"
                          filter-placement="bottom-end">
@@ -30,7 +33,7 @@
               disable-transitions>{{scope.row.status}}</el-tag>
           </template>>
         </el-table-column>
-        <el-table-column prop="dateStart" label="date" sortable></el-table-column>
+        <el-table-column prop="dateStart" label="Date" sortable></el-table-column>
       </el-table>
     </div>
   </div>
@@ -41,30 +44,35 @@ export default {
   name: 'AdminHome',
   data () {
     return {
-      tableData: [
-        {
-          content: 'didier HU',
-          company: 'MedicalHero',
-          stage: '1-quote',
-          status: 'waiting',
-          dateStart: '06/05/2020'
-        },
-        {
-          content: 'Aidier HU',
-          company: 'BedicalHero',
-          stage: '2-invoice',
-          status: 'to do',
-          dateStart: '04/05/2020'
-        },
-        {
-          content: 'Zidier HU',
-          company: 'AedicalHero',
-          stage: '2-invoice',
-          status: 'to do',
-          dateStart: '01/05/2020'
-        }
-      ]
+      tableData: []
+
+      // tableData: [
+      //   {
+      //     contact: 'didier HU',
+      //     company: 'MedicalHero',
+      //     stage: '1-quote',
+      //     status: 'waiting',
+      //     dateStart: '06/05/2020'
+      //   },
+      //   {
+      //     contact: 'Aidier HU',
+      //     company: 'BedicalHero',
+      //     stage: '2-invoice',
+      //     status: 'to do',
+      //     dateStart: '04/05/2020'
+      //   },
+      //   {
+      //     contact: 'Zidier HU',
+      //     company: 'AedicalHero',
+      //     stage: '2-invoice',
+      //     status: 'to do',
+      //     dateStart: '01/05/2020'
+      //   }
+      // ]
     }
+  },
+  mounted () {
+    this.getDeal()
   },
   methods: {
     filterStage (value, row) {
@@ -72,6 +80,48 @@ export default {
     },
     filterStatus (value, row) {
       return row.status === value
+    },
+    getDeal () {
+      this.$http.get('deal').then(async (deals) => {
+        await Promise.all(deals.data.map((deal) => {
+          this.$http.get('user/user/' + deal.user).then((user) => {
+            if (user !== null) {
+              this.tableData.push({
+                contact: user.data.firstName + ' ' + user.data.lastName,
+                company: user.data.company,
+                stage: this.stageName(deal.stage),
+                status: this.status(deal.stage),
+                dateStart: deal.dateStart[0],
+                dealId: deal._id
+              })
+            }
+          })
+        }))
+      })
+    },
+    status (stage) {
+      switch (+stage) {
+        case 0: return 'To Do'
+        case 1: return 'WIP'
+        case 2: return 'To Do'
+        case 3: return 'WIP'
+        case 4: return 'To Do'
+        case 5: return 'To Do'
+        case 6: return 'WIP'
+        case 7: return 'Done'
+      }
+    },
+    stageName (stage) {
+      switch (+stage) {
+        case 0: return 'Quote'
+        case 1: return 'Quote'
+        case 2: return 'Facture Accompte'
+        case 3: return 'Facture Accompte'
+        case 4: return 'Livraison'
+        case 5: return 'Facture Solde'
+        case 6: return 'Facture Solde'
+        case 7: return 'Finis'
+      }
     }
   }
 }

@@ -85,7 +85,7 @@ export default {
       this.$http.get('deal').then(async (deals) => {
         await Promise.all(deals.data.map((deal) => {
           this.$http.get('user/user/' + deal.user).then((user) => {
-            if (user !== null) {
+            if (user.data !== null) {
               this.tableData.push({
                 contact: user.data.firstName + ' ' + user.data.lastName,
                 company: user.data.company,

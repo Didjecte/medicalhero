@@ -519,7 +519,7 @@ export default {
               }).then((dealId) => {
                 this.$http.post('user/addDeal', {
                   userId: resp.data.userId,
-                  deal: dealId.data
+                  dealId: dealId.data
                 }).then((res) => {
                   /* 跳转到感谢页面并传参过去 */
                   this.$router.push({ path: '/validationDevis', query: { ffp2: this.num1, chrg: this.num2, express_ffp2: this.express_ffp2, express_chrg: this.express_chrg } })
@@ -542,7 +542,7 @@ export default {
       str = str.split(' ')
 
       for (var i = 0, x = str.length; i < x; i++) {
-        str[i] = str[i][0].toUpperCase() + str[i].substr(1)
+        str[i] = str[i][0].toUpperCase() + str[i].substr(1).toLowerCase()
       }
 
       return str.join(' ')

@@ -39,9 +39,9 @@ const routes = [
         component: AdminHome,
         beforeEnter
       },
-      { 
-        path: '/deal', 
-        name: 'DealOne', 
+      {
+        path: '/deal',
+        name: 'DealOne',
         component: DealOne,
         beforeEnter
       },

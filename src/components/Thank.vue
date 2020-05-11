@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <vue-headful
+      title="MedicalHero - Devis"
+      />
     <div class="thank">
       <div class="thank_content">
         <section class="section1">

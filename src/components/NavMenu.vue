@@ -3,12 +3,13 @@
     <el-header class="header" style="height:60px; padding: 0px 15px 0px 15px">
       <div class="container" style="padding: 0px 0px 0px 0px !important">
         <el-row type="flex" class="row-bg" justify="space-between" align="middle">
-            <span style="display:inline-block;">
+          <span style="display:inline-block;">
             <router-link class="logo-text" to="/">
-              <!-- <img :src="logo" class="logo"> -->
               Stop-covid19.fr
             </router-link>
           </span>
+          <!-- not connected -->
+          <div v-if="!(this.$store.getters.permission >= 2)">
             <el-menu :default-active="activeIndex"
               :router="true"
               mode="horizontal"
@@ -21,6 +22,39 @@
                 <el-menu-item index="/login" route="/login">Login</el-menu-item>
               </el-submenu>
             </el-menu>
+          </div>
+          <!-- user -->
+          <div v-if="this.$store.getters.permission < 512 && this.$store.getters.permission >= 2">
+            <el-menu :default-active="activeIndex2"
+              :router="true"
+              mode="horizontal"
+              menu-trigger="click" style="float:right">
+                <el-menu-item index="/devis" route="/devis" class="hidden-xs-only">Devis</el-menu-item>
+              <el-menu-item index="/user" route="/user" class="hidden-xs-only">Commandes</el-menu-item>
+              <el-menu-item @click="logout" index="/logout" class="hidden-xs-only">Logout</el-menu-item>
+              <el-submenu index="/" class="hidden-sm-and-up">
+                <template slot="title"><el-button plain class="el-icon-more"></el-button></template>
+                <el-menu-item index="/devis" route="/devis">Devis</el-menu-item>
+                <el-menu-item index="/user" route="/user">Commandes</el-menu-item>
+                <el-menu-item @click="logout" index="/logout">Logout</el-menu-item>
+              </el-submenu>
+            </el-menu>
+          </div>
+          <!-- admin -->
+          <div v-if="this.$store.getters.permission >= 512">
+            <el-menu :default-active="activeIndex2"
+              :router="true"
+              mode="horizontal"
+              menu-trigger="click" style="float:right">
+              <el-menu-item index="/admin" route="/admin" class="hidden-xs-only">Dashboard</el-menu-item>
+              <el-menu-item @click="logout" index="/logout" class="hidden-xs-only">Logout</el-menu-item>
+              <el-submenu index="/" class="hidden-sm-and-up">
+                <template slot="title"><el-button plain class="el-icon-more"></el-button></template>
+                <el-menu-item index="/admin" route="/admin">Dashboard</el-menu-item>
+                <el-menu-item @click="logout" index="/logout">Logout</el-menu-item>
+              </el-submenu>
+            </el-menu>
+          </div>
         </el-row>
       </div>
     </el-header>
@@ -41,15 +75,36 @@ export default {
   data () {
     return {
       activeIndex: null,
+      activeIndex2: '/admin',
       logo: require('../assets/images/medicalHeroLogo.png')
     }
   },
+  computed: {
+    connected () {
+      return (this.$store.getters.permission >= 2)
+    }
+  },
   mounted: function () {
-    this.activeIndex = this.$route.path
+    this.$nextTick(function () {
+      this.activeIndex = this.$route.path
+      this.activeIndex2 = this.$route.path
+    })
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('logout')
+        .then(() => {
+          if (this.$router.currentRoute.path !== '/login') {
+            this.$router.push('/login')
+          }
+        })
+        .catch(err => console.log(err))
+    }
   },
   watch: {
     $route (to, from) {
       this.activeIndex = to.path
+      this.activeIndex2 = to.path
     }
   }
 }
@@ -61,7 +116,7 @@ export default {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     position: fixed;
     width: 100%;
-    z-index: 4000;
+    z-index: 2500;
   }
 
   .logo {
@@ -87,6 +142,10 @@ export default {
   .el-submenu__title {
     border-bottom: none !important;
     padding: 0 0 0 0 !important;
+  }
+
+  .el-menu--horizontal {
+    z-index: 2550 !important;
   }
 
   .el-footer {

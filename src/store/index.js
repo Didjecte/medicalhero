@@ -31,6 +31,9 @@ export default new Vuex.Store({
       state.token = ''
       state.userId = ''
       state.permission = 0
+    },
+    set_user (state, user) {
+      state.user = user
     }
   },
   actions: {
@@ -42,31 +45,57 @@ export default new Vuex.Store({
             const token = resp.data.token
             const userId = resp.data.userId
             const permission = +resp.data.permission
+            const userObj = resp.data.user
             window.localStorage.setItem('token', token)
             axios.defaults.headers.common.Authorization = token
             commit('auth_success', { token, userId, permission })
+            commit('set_user', userObj)
             resolve(resp)
           })
           .catch(err => {
             commit('auth_error')
+            commit('set_user', null)
             window.localStorage.removeItem('token')
             reject(err)
-          }).then()
+          })
       })
     },
     logout ({ commit }) {
       return new Promise((resolve, reject) => {
         commit('logout')
+        commit('set_user', null)
         window.localStorage.removeItem('token')
         delete axios.defaults.headers.common.Authorization
         resolve()
+      })
+    },
+    reAuth ({ commit }, token) {
+      return new Promise((resolve, reject) => {
+        commit('auth_request')
+        axios({ url: 'https://www.medicalhero.fr/api/user/', data: token, method: 'POST' })
+          .then(resp => {
+            const userId = resp.data.userId
+            const permission = +resp.data.permission
+            const userObj = resp.data.user
+            commit('auth_success', { token, userId, permission })
+            commit('set_user', userObj)
+            resolve(resp)
+          })
+          .catch(err => {
+            commit('auth_error')
+            commit('set_user', null)
+            window.localStorage.removeItem('token')
+            reject(err)
+          })
       })
     }
   },
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
-    permission: state => state.permission
+    permission: state => state.permission,
+    user: state => state.user,
+    token: state => state.token
   },
   modules: {
   }

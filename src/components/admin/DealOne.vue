@@ -304,4 +304,8 @@ export default {
     }
   }
 
+  .el-tooltip__popper {
+    pointer-events: none !important;
+    color:black;
+  }
 </style>

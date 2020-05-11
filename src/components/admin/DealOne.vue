@@ -35,87 +35,84 @@
         <el-step title="Bill 2" :description="status_4 === 'process' ? 'waiting/to do' : ''" :status="status_4"></el-step><!---->
         <el-step title="Closed" :description="status_5 === 'process' ? 'waiting/to do' : ''" :status="status_5"></el-step><!---->
       </el-steps>
-      <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
-        {{desc}}
-      </el-tooltip>
     </div>
     <!--表单+表格-->
     <div class="deal_form">
       <h1>Generer le devis</h1>
       <table>
         <tbody>
-          <tr>
-            <td class="deal_left">
-              <div class="deal_title">
-                <span>Masques Chirurgicaux</span>
-                <el-input v-model="num1" placeholder="请输入内容"></el-input>
-              </div>
-            </td>
-            <td class="deal_middle"></td>
-            <td class="deal_right">Prix total</td>
-          </tr>
-          <tr>
-            <td class="deal_left">
-              Prix Unitaire
-              <el-input v-model="num2" placeholder="请输入内容"></el-input>
-            </td>
-            <td class="deal_middle">Remise %
-              <el-input v-model="num3" placeholder="请输入内容"></el-input>
-            </td >
-            <td class="deal_right">1970$</td>
-          </tr>
-          <tr>
-            <td class="deal_left">Prix Livraison
-              <el-input v-model="num2" placeholder="请输入内容"></el-input>
-            </td>
-            <td class="deal_middle">Remise %
-              <el-input v-model="num3" placeholder="请输入内容"></el-input>
-            </td>
-            <td class="deal_right">250$</td>
-          </tr>
+        <tr>
+          <td class="deal_left">
+            <div class="deal_title">
+              <span>Masques Chirurgicaux</span>
+              <el-input v-model="num1" placeholder="请输入内容"></el-input>
+            </div>
+          </td>
+          <td class="deal_middle"></td>
+          <td class="deal_right">Prix total</td>
+        </tr>
+        <tr>
+          <td class="deal_left">
+            Prix Unitaire
+            <el-input v-model="num2" placeholder="请输入内容"></el-input>
+          </td>
+          <td class="deal_middle">Remise %
+            <el-input v-model="num3" placeholder="请输入内容"></el-input>
+          </td >
+          <td class="deal_right">1970$</td>
+        </tr>
+        <tr>
+          <td class="deal_left">Prix Livraison
+            <el-input v-model="num2" placeholder="请输入内容"></el-input>
+          </td>
+          <td class="deal_middle">Remise %
+            <el-input v-model="num3" placeholder="请输入内容"></el-input>
+          </td>
+          <td class="deal_right">250$</td>
+        </tr>
         </tbody>
       </table>
       <table>
         <tbody>
-          <tr>
-            <td class="deal_left">
-              <div class="deal_title">
-                <span>Masques Chirurgicaux</span>
-                <el-input v-model="num1" placeholder="请输入内容"></el-input>
-              </div>
-            </td>
-            <td class="deal_middle"></td>
-            <td class="deal_right">Prix total</td>
-          </tr>
-          <tr>
-            <td class="deal_left">
-              Prix Unitaire
-              <el-input v-model="num2" placeholder="请输入内容"></el-input>
-            </td>
-            <td class="deal_middle">Remise %
-              <el-input v-model="num3" placeholder="请输入内容"></el-input>
-            </td>
-            <td class="deal_right">1970$</td>
-          </tr>
-          <tr>
-            <td class="deal_left">Prix Livraison
-              <el-input v-model="num2" placeholder="请输入内容"></el-input>
-            </td>
-            <td class="deal_middle">Remise %
-              <el-input v-model="num3" placeholder="请输入内容"></el-input>
-            </td>
-            <td class="deal_right">250$</td>
-          </tr>
-          <tr>
-            <td class="deal_left"></td>
-            <td class="deal_middle">TOTAL HT</td>
-            <td class="deal_right">3510$</td>
-          </tr>
-          <tr>
-            <td class="deal_left"></td>
-            <td class="deal_middle">TOTAL TTC</td>
-            <td class="deal_right">4212$</td>
-          </tr>
+        <tr>
+          <td class="deal_left">
+            <div class="deal_title">
+              <span>Masques Chirurgicaux</span>
+              <el-input v-model="num1" placeholder="请输入内容"></el-input>
+            </div>
+          </td>
+          <td class="deal_middle"></td>
+          <td class="deal_right">Prix total</td>
+        </tr>
+        <tr>
+          <td class="deal_left">
+            Prix Unitaire
+            <el-input v-model="num2" placeholder="请输入内容"></el-input>
+          </td>
+          <td class="deal_middle">Remise %
+            <el-input v-model="num3" placeholder="请输入内容"></el-input>
+          </td>
+          <td class="deal_right">1970$</td>
+        </tr>
+        <tr>
+          <td class="deal_left">Prix Livraison
+            <el-input v-model="num2" placeholder="请输入内容"></el-input>
+          </td>
+          <td class="deal_middle">Remise %
+            <el-input v-model="num3" placeholder="请输入内容"></el-input>
+          </td>
+          <td class="deal_right">250$</td>
+        </tr>
+        <tr>
+          <td class="deal_left"></td>
+          <td class="deal_middle">TOTAL HT</td>
+          <td class="deal_right">3510$</td>
+        </tr>
+        <tr>
+          <td class="deal_left"></td>
+          <td class="deal_middle">TOTAL TTC</td>
+          <td class="deal_right">4212$</td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -142,10 +139,23 @@ export default {
       status_5: ''
     }
   },
+  created () {
+    if (this.active === 0) {
+      this.status_1 = 'process'/*  */
+      this.status_2 = 'wait'
+      this.status_3 = 'wait'
+      this.status_4 = 'wait'
+      this.status_5 = 'wait'
+    }
+  },
   methods: {
     next () {
       /* if (this.active++ > 4) this.active = 1 */
-      this.active++
+      if (this.active === 0) {
+        this.active += 2
+      } else {
+        this.active++
+      }
       if (this.active === 1) {
         this.status_1 = 'process'/*  */
         this.status_2 = 'wait'
@@ -176,8 +186,6 @@ export default {
         this.status_3 = 'success'
         this.status_4 = 'success'
         this.status_5 = 'process'
-      } else {
-        this.active = 1
       }
     }
   }
@@ -241,14 +249,14 @@ export default {
       border-bottom: 50px solid blue;
     }*/
     .el-step__description.is-process{
-      color:black;
-      background-color:grey;
+      color:white;
+      background-color:#303133;
       padding-top:10px;
       margin-top:10px;
       position:relative;
       border-radius: 4px;
       height:30px;
-      width:60px;
+      // width:60px;
     }
     .el-step__description.is-process:before{
       content:"";
@@ -256,13 +264,15 @@ export default {
       height: 0;
       border-style:solid;
       border-width:10px;
-      border-color:transparent transparent #666 transparent;
+      border-color:transparent transparent #303133 transparent;
       position:absolute;
       top:-20px;
-      left:102px;
-      /*margin-top: 15px;
-      margin-left: -10px;*/
-      /*position: fixed;*/
+      margin-left:16%;
+    }
+    @media (max-width:421px) {
+      .el-step__description.is-process:before{
+        // margin-left:44%;
+      }
     }
     .el-step__description{}
   }

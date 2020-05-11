@@ -72,7 +72,7 @@ export default new Vuex.Store({
     reAuth ({ commit }, token) {
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        axios({ url: 'https://www.medicalhero.fr/api/user/', data: token, method: 'POST' })
+        axios({ url: 'https://www.medicalhero.fr/api/user/reAuth', data: token, method: 'POST' })
           .then(resp => {
             const userId = resp.data.userId
             const permission = +resp.data.permission

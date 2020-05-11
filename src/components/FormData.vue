@@ -467,7 +467,7 @@ export default {
   },
   methods: {
     getPrice () {
-      this.$http.get('https://www.medicalhero.fr/api/info').then((res) => {
+      this.$http.get('info').then((res) => {
         if (res.status === 200) {
           this.ffp2DeliveryPrice = res.data.ffp2DeliveryPrice // ffp2_国际快递费
           this.chrgDeliveryPrice = res.data.chrgDeliveryPrice // 医用_国际快递费

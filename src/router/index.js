@@ -7,7 +7,8 @@ import NavMenu from '../components/NavMenu.vue'
 import Login from '../components/Login.vue'
 import Thank from '../components/Thank.vue'
 import AdminHome from '../components/admin/AdminHome.vue'
-import DealOne from '../components/admin/DealOne.vue'
+import Test from '../components/admin/Test.vue'
+import DealOne from '../components/admin/DealOne.vue
 import UserHome from '../components/user/UserHome.vue'
 import NotFound from '../components/NotFound.vue'
 
@@ -40,6 +41,11 @@ const routes = [
         beforeEnter
       },
       {
+        path: '/test',
+        name: 'Test',
+        component: Test,
+      },
+      {
         path: '/deal',
         name: 'DealOne',
         component: DealOne,
@@ -65,13 +71,14 @@ async function beforeEnter (to, from, next) {
     if (window.localStorage.getItem('token')) {
       if (store.getters.permission !== 0) {
         if (store.getters.permission < 512 && store.getters.permission >= 2) {
-          if (to.path !== '/user') {
+          if (to.path === '/admin' ||
+              to.path === '/test') {
             next('/user')
           } else {
             next()
           }
         } else {
-          if (to.path !== '/admin') {
+          if (to.path === '/user') {
             next('/admin')
           } else {
             next()
@@ -81,13 +88,14 @@ async function beforeEnter (to, from, next) {
         axios.defaults.headers.common.Authorization = window.localStorage.getItem('token')
         var hasPermission = await store.dispatch('reAuth')
         if (hasPermission.data.permission < 512 && store.getters.permission >= 2) {
-          if (to.path !== '/user') {
+          if (to.path === '/admin' ||
+              to.path === '/test') {
             next('/user')
           } else {
             next()
           }
         } else {
-          if (to.path !== '/admin') {
+          if (to.path === '/user') {
             next('/admin')
           } else {
             next()

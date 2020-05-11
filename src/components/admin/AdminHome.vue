@@ -113,10 +113,10 @@ export default {
     },
     stageName (stage) {
       switch (+stage) {
-        case 0: return 'Quote'
-        case 1: return 'Quote'
-        case 2: return 'Facture Accompte'
-        case 3: return 'Facture Accompte'
+        case 0: return 'Devis'
+        case 1: return 'Devis'
+        case 2: return 'Facture Acompte'
+        case 3: return 'Facture Acompte'
         case 4: return 'Livraison'
         case 5: return 'Facture Solde'
         case 6: return 'Facture Solde'

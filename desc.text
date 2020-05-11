@@ -1,3 +1,15 @@
+
+admin1:  didjecte@gmail.com / pumapuma (账号密码)  ——  permission:2
+admin2:  admin@admin.com / admin
+更改的东西：
+  1.响应式（el-row/el-col响应式）
+  2.动画效果transition效果
+  3.键盘效果
+  4.store.js
+  Read:  this.$store.getters.
+  Write:   this.$store.commit
+————————————————————————————————————————
+
 第三列（国际快递FFP2）： 数量    一个的单价    总价（数量*单价）
 第四列（国际快递Chiru医用口罩）：数量   一个的单间    总价（数量*单价）
 FFP2DeliveryPrice : 0.35

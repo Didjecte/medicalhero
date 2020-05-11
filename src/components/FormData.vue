@@ -228,11 +228,9 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <div class="c_button"><el-button @click.stop.prevent="postForm('userFormRef')" native-type="submit" type="primary" :disabled="isEmpty">Recevoir un devis final</el-button>
-        </div>
+            <div class="c_button"><el-button @click.stop.prevent="postForm('userFormRef')" native-type="submit" type="primary" :disabled="isEmpty">Recevoir un devis final</el-button></div>
           </el-form>
         </div>
-
       </div>
     </div>
 </template>
@@ -588,7 +586,7 @@ export default {
       margin:25px 0 40px;
     }
     .c_side{
-      margin:0px 0px 5px 0;
+      margin:0 0 5px 0;
       // display:flex;
       // justify-content: space-between;
       // align-items: center;
@@ -622,7 +620,7 @@ export default {
     table{
       width:100%;
       font-size:12px;
-      border-width: 0px 1px 0px 1px;
+      border-width: 0 1px 0 1px;
       border-style: solid;
       border-color: rgba(232, 232, 232, 1);
       border-radius: 8px;

@@ -8,6 +8,7 @@ import Login from '../components/Login.vue'
 import Thank from '../components/Thank.vue'
 import AdminHome from '../components/admin/AdminHome.vue'
 import Test from '../components/admin/Test.vue'
+import DealOne from '../components/admin/DealOne.vue
 import UserHome from '../components/user/UserHome.vue'
 import NotFound from '../components/NotFound.vue'
 
@@ -43,6 +44,11 @@ const routes = [
         path: '/test',
         name: 'Test',
         component: Test,
+      },
+      {
+        path: '/deal',
+        name: 'DealOne',
+        component: DealOne,
         beforeEnter
       },
       {

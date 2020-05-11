@@ -4,7 +4,7 @@
       title="MedicalHero - Dashboard"
       />
     <h1 style="margin:30px 0;">Dashboard Admin</h1>
-    <el-button type="primary" style="margin:30px 0 20px 0;">Créer un Deal</el-button>
+    <router-link to="/deal"><el-button type="primary" style="margin:60px 0 60px 0;">Primary</el-button></router-link>
     <div>
       <el-table
         :data="tableData"

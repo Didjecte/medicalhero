@@ -29,11 +29,11 @@
     <div class="deal_step">
       <el-steps :active="active" finish-status="success" align-center>
         <!-- error是红色，success是绿色，finish是主题色，wait是等待下一步的灰色，process是--><!--success process wait-->
-        <el-step title="Quote" :description="status_1 === 'process' ? 'waiting/to do' : ''" :status="status_1"></el-step><!---->
-        <el-step title="Bill 1" :description="status_2 === 'process' ? 'waiting/to do' : ''" :status="status_2"></el-step><!---->
-        <el-step title="Shipping" :description="status_3 === 'process' ? 'waiting/to do' : ''" :status="status_3"></el-step><!---->
-        <el-step title="Bill 2" :description="status_4 === 'process' ? 'waiting/to do' : ''" :status="status_4"></el-step><!---->
-        <el-step title="Closed" :description="status_5 === 'process' ? 'waiting/to do' : ''" :status="status_5"></el-step><!---->
+        <el-step title="Quote" :description="status_1 === 'process' ? desc : ''" :status="status_1"></el-step><!---->
+        <el-step title="Bill 1" :description="status_2 === 'process' ? desc : ''" :status="status_2"></el-step><!---->
+        <el-step title="Shipping" :description="status_3 === 'process' ? desc : ''" :status="status_3"></el-step><!---->
+        <el-step title="Bill 2" :description="status_4 === 'process' ? desc : ''" :status="status_4"></el-step><!---->
+        <el-step title="Closed" :description="status_5 === 'process' ? desc : ''" :status="status_5"></el-step><!---->
       </el-steps>
     </div>
     <!--表单+表格-->
@@ -136,7 +136,8 @@ export default {
       status_2: '',
       status_3: '',
       status_4: '',
-      status_5: ''
+      status_5: '',
+      desc: 'waiting/to do'
     }
   },
   created () {
@@ -226,12 +227,13 @@ export default {
   .deal_step{
     margin-top:50px;
     .el-step__line{
+      height:1px!important;
       top:9px!important;
       border-bottom:2px dashed #BDC8D6;
       background-color:white;
     }
     .el-step__line-inner{
-      border-width:2px!important;
+      border-width:1.5px!important;
       border-color: black;
       transition-delay: 0ms!important;
     }
@@ -266,7 +268,7 @@ export default {
       border-width:10px;
       border-color:transparent transparent #303133 transparent;
       position:absolute;
-      top:-20px;
+      top:-19px;
       margin-left:16%;
     }
     @media (max-width:421px) {

@@ -43,7 +43,8 @@ const routes = [
       {
         path: '/test',
         name: 'Test',
-        component: Test
+        component: Test,
+        beforeEnter
       },
       {
         path: '/deal',
@@ -72,13 +73,16 @@ async function beforeEnter (to, from, next) {
       if (store.getters.permission !== 0) {
         if (store.getters.permission < 512 && store.getters.permission >= 2) {
           if (to.path === '/admin' ||
-              to.path === '/test') {
+              to.path === '/test' ||
+              to.path === '/deal' ||
+              to.path === '/login') {
             next('/user')
           } else {
             next()
           }
         } else {
-          if (to.path === '/user') {
+          if (to.path === '/user' ||
+          to.path === '/login') {
             next('/admin')
           } else {
             next()
@@ -89,13 +93,15 @@ async function beforeEnter (to, from, next) {
         var hasPermission = await store.dispatch('reAuth')
         if (hasPermission.data.permission < 512 && store.getters.permission >= 2) {
           if (to.path === '/admin' ||
-              to.path === '/test') {
+              to.path === '/test' ||
+              to.path === '/login') {
             next('/user')
           } else {
             next()
           }
         } else {
-          if (to.path === '/user') {
+          if (to.path === '/user' ||
+          to.path === '/login') {
             next('/admin')
           } else {
             next()

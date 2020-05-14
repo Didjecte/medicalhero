@@ -43,7 +43,7 @@
               </div>
             </el-collapse-transition>
             <div>
-              <p style="color:gray;font-size:12px;"><i style="margin-right:5px;" class="el-icon-warning-outline"></i><i>Si vous avez besoin de plus de masques que nous pouvons en acheter, veuillez nous appeler directement.</i></p>
+              <p style="color:gray;font-size:12px;"><i style="margin-right:5px;" class="el-icon-warning-outline"></i><i>Si vous avez besoin d'une quantité importante de masques, veuillez nous <a href="mailto:contact@medicalhero.fr" target="_blank">contacter</a> directement.</i></p>
             </div>
             <!-- <div>
               <p style="font-size:12px"><el-checkbox v-model="flag">
@@ -240,20 +240,27 @@
 export default {
   name: 'FormData',
   data () {
+    const checkName = (rule, value, callback) => {
+      const regTel = /^[a-zA-Z]*$/
+      if (regTel.test(value)) {
+        return callback()
+      }
+      callback(new Error('Ne peut contenir de caractères spéciaux.'))
+    }
     const checkTel = (rule, value, callback) => {
       const regTel = /^\d{10}$/
       if (regTel.test(value)) {
         return callback()
       }
-      callback(new Error('请输入正确的手机号码'))
+      callback(new Error('Veuillez saisir un numéro de tél valide.'))
     }
     const checkEmail = (rule, value, callback) => {
       // 验证邮箱的正则表达式
-      const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
+      const regEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
       if (regEmail.test(value)) {
         return callback()
       }
-      callback(new Error('请输入合法的邮箱'))
+      callback(new Error('Veuillez saisir un mail valide.'))
     }
     return {
       /* input: 12, */
@@ -285,7 +292,8 @@ export default {
       },
       userFormRules: {
         firstName: [
-          { required: true, message: 'Veuillez saisir votre nom de famille!', trigger: 'blur' }
+          { required: true, message: 'Veuillez saisir votre nom de famille!', trigger: 'blur' },
+          { validator: checkName, trigger: 'blur' }
         ],
         lastName: [
           { required: true, message: 'Veuillez saisir votre nom!', trigger: 'blur' }
@@ -361,21 +369,21 @@ export default {
       } else if (this.num1 >= 10000) {
         ffpMoney = this.ffp2DeliveryPrice[1]
       } else if (this.num1 >= 600) {
-        ffpMoney = this.ffp2DeliveryPrice[0]
+        ffpMoney = this.ffp2DeliveryPrice[0] * (this.num1 / 600)
       }
       return ffpMoney
     },
     /* 医用 国际快递总金额 */
     nationChrg () {
       let chrgMoney = 0
-      if (this.num2 >= 1000000) {
+      if (this.num2 >= 100000) {
         chrgMoney = this.chrgDeliveryPrice[3]
-      } else if (this.num2 >= 100000) {
-        chrgMoney = this.chrgDeliveryPrice[2]
       } else if (this.num2 >= 20000) {
+        chrgMoney = this.chrgDeliveryPrice[2]
+      } else if (this.num2 >= 10000) {
         chrgMoney = this.chrgDeliveryPrice[1]
       } else if (this.num2 >= 2000) {
-        chrgMoney = this.chrgDeliveryPrice[0]
+        chrgMoney = this.chrgDeliveryPrice[0] * (this.num2 / 2000)
       }
       return chrgMoney
     },

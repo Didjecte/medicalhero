@@ -80,17 +80,23 @@ async function beforeEnter (to, from, next) {
           } else {
             next()
           }
-        } else {
+        } else if (store.getters.permission >= 512 && store.getters.permission >= 2) {
           if (to.path === '/user' ||
           to.path === '/login') {
             next('/admin')
           } else {
             next()
           }
+        } else {
+          if (to.path !== '/login') {
+            next('/login')
+          } else {
+            next()
+          }
         }
       } else {
         axios.defaults.headers.common.Authorization = window.localStorage.getItem('token')
-        var hasPermission = await store.dispatch('reAuth')
+        var hasPermission = await store.dispatch('reAuth', window.localStorage.getItem('token'))
         if (hasPermission.data.permission < 512 && store.getters.permission >= 2) {
           if (to.path === '/admin' ||
               to.path === '/test' ||
@@ -99,10 +105,16 @@ async function beforeEnter (to, from, next) {
           } else {
             next()
           }
-        } else {
+        } else if (hasPermission.data.permission >= 512 && store.getters.permission >= 2) {
           if (to.path === '/user' ||
           to.path === '/login') {
             next('/admin')
+          } else {
+            next()
+          }
+        } else {
+          if (to.path !== '/login') {
+            next('/login')
           } else {
             next()
           }

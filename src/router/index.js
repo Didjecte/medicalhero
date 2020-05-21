@@ -11,6 +11,7 @@ import Test from '../components/admin/Test.vue'
 import DealOne from '../components/admin/DealOne.vue'
 import UserHome from '../components/user/UserHome.vue'
 import NotFound from '../components/NotFound.vue'
+import QbConnect from '../components/QbConnect.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,7 @@ const routes = [
     children: [
       { path: '/', redirect: '/login' },
       { path: '/devis', name: 'Devis', component: FormData },
+      { path: '/qbConnect', name: 'QbConnect', component: QbConnect },
       { path: '/validationDevis', name: 'ValidationDevis', component: Thank },
       {
         path: '/login',

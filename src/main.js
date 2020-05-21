@@ -14,12 +14,10 @@ import axios from 'axios'
 import { currency } from './util/currency' // 全局过滤器的使用
 import simplebar from 'simplebar-vue' // simplebar
 import 'simplebar/dist/simplebar.min.css'
-
 // axios.interceptors.request.use(config => {
 //   config.headers.Authorization = window.localStorage.getItem('token')
 //   return config
 // })
-
 const token = window.localStorage.getItem('token')
 if (token) {
   if (!store.getters.isLoggedIn) {
@@ -28,7 +26,6 @@ if (token) {
   }
 }
 axios.defaults.baseURL = 'https://www.medicalhero.fr/api/'
-// axios.defaults.baseURL = 'http://localhost:8444/'
 
 Vue.prototype.$http = axios
 Vue.config.productionTip = false

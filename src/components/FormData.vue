@@ -514,7 +514,7 @@ export default {
           { required: true, message: 'Veuillez saisir le nom de votre société!', trigger: 'blur' }
         ],
         telephone: [
-          { required: true, message: 'Entrez votre téléphone!', trigger: 'blur' },
+          { required: true, message: 'Veuillez saisir votre téléphone!', trigger: 'blur' },
           { validator: checkTel, trigger: 'blur' }
         ],
         to: [
@@ -522,17 +522,17 @@ export default {
           { validator: checkEmail, trigger: 'blur' }
         ],
         street: [
-          { required: true, message: 'Veuillez saisir une adresse!', trigger: 'blur' }
+          { required: true, message: 'Veuillez saisir votre adresse!', trigger: 'blur' }
         ],
         complement: [
           { required: false }
         ],
         zip: [
-          { required: true, message: 'Veuillez saisir un code postal!', trigger: 'blur' },
+          { required: true, message: 'Veuillez saisir votre code postal!', trigger: 'blur' },
           { validator: checkZip, trigger: 'blur' }
         ],
         city: [
-          { required: true, message: 'Veuillez saisir une ville!', trigger: 'blur' }
+          { required: true, message: 'Veuillez saisir votre ville!', trigger: 'blur' }
         ]
       }
       // userId: '',
@@ -749,18 +749,20 @@ export default {
             resolve()
           }, 1000)
         } else {
-          this.$http.defaults.headers.common.Authorization = window.localStorage.getItem('token')
-          this.$store.dispatch('reAuth', window.localStorage.getItem('token')).then(() => {
-            if (this.$store.getters.user) {
-              this.state = 'estimate'
-              this.userId = this.$store.getters.user._id
-              this.userForm.firstName = this.$store.getters.user.firstName
-              this.userForm.lastName = this.$store.getters.user.lastName
-            }
-            setTimeout(function () {
-              resolve()
-            }, 1000)
-          })
+          if (window.localStorage.getItem('token')) {
+            this.$http.defaults.headers.common.Authorization = window.localStorage.getItem('token')
+            this.$store.dispatch('reAuth', window.localStorage.getItem('token')).then(() => {
+              if (this.$store.getters.user) {
+                this.state = 'estimate'
+                this.userId = this.$store.getters.user._id
+                this.userForm.firstName = this.$store.getters.user.firstName
+                this.userForm.lastName = this.$store.getters.user.lastName
+              }
+            })
+          }
+          setTimeout(function () {
+            resolve()
+          }, 1000)
         }
       })
     },
@@ -786,7 +788,7 @@ export default {
                   company: this.capitalLetter(this.userForm.company),
                   phone: this.userForm.telephone,
                   mail: this.userForm.to,
-                  addresses: [address.data]
+                  address: address.data
                 }).then((resp) => {
                   window.localStorage.setItem('token', resp.data.token)
                   this.userId = resp.data.userId

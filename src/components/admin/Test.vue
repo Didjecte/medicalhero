@@ -4,20 +4,30 @@
       title="MedicalHero - Dashboard"
       />
     <h1 style="margin:30px 0;">Dashboard Admin</h1>
+    <el-button @click="connectQb()" type="success" style="margin:30px 0 20px 0;" v-if="!qbConnect">Connect</el-button>
+    <br>
+    <el-button @click="test()" type="error" style="margin:30px 0 20px 0;">test</el-button>
+    <br>
     <el-button @click="createQuote()" type="primary" style="margin:30px 0 20px 0;" >Créer un Deal</el-button>
     <p>{{chrg}}</p>
     <p>{{ffp2}}</p>
+    <p>{{chrgExpress}}</p>
+    <p>{{ffp2Express}}</p>
     <p>{{chrgPrice}}</p>
     <p>{{ffp2Price}}</p>
-    <p>{{chrgDeliveryPrice}}</p>
-    <p>{{ffp2DeliveryPrice}}</p>
+    <p>{{chrgStandardPrice}}</p>
+    <p>{{ffp2StandardPrice}}</p>
+    <p>{{chrgExpressPrice}}</p>
+    <p>{{ffp2ExpressPrice}}</p>
     <p>{{totalChrg}}</p>
     <p>{{totalFfp2}}</p>
-    <p>{{totalChrgDelivery}}</p>
-    <p>{{totalFfp2Delivery}}</p>
-    <p>{{total_HT}}</p>
-    <p>{{total_TVA}}</p>
-    <p>{{total_TTC}}</p>
+    <p>{{totalChrgStandard}}</p>
+    <p>{{totalFfp2Standard}}</p>
+    <p>{{totalChrgExpress}}</p>
+    <p>{{totalFfp2Express}}</p>
+    <p>{{total_HT | currency}}</p>
+    <p>{{total_TVA | currency}}</p>
+    <p>{{total_TTC | currency}}</p>
   </div>
 </template>
 
@@ -36,14 +46,22 @@ export default {
       // quote
       chrg: 0,
       ffp2: 0,
+      chrgExpress: 0,
+      ffp2Express: 0,
       chrgPrice: 0,
       ffp2Price: 0,
       chrgPriceDiscount: 0,
       ffp2PriceDiscount: 0,
-      chrgDeliveryPrice: 0,
-      ffp2DeliveryPrice: 0,
-      chrgDeliveryPriceDiscount: 0,
-      ffp2DeliveryPriceDiscount: 0
+      chrgStandardPrice: 0,
+      ffp2StandardPrice: 0,
+      chrgExpressPrice: 0,
+      ffp2ExpressPrice: 0,
+      chrgStandardPriceDiscount: 0,
+      ffp2StandardPriceDiscount: 0,
+      chrgExpressPriceDiscount: 0,
+      ffp2ExpressPriceDiscount: 0,
+
+      qbConnect: false
     }
   },
   computed: {
@@ -51,19 +69,31 @@ export default {
       return this.chrg * this.chrgPrice * (1 + this.chrgPriceDiscount / 100)
     },
     totalFfp2 () {
-      return this.chrg * this.chrgPrice * (1 + this.chrgPriceDiscount / 100)
+      return this.ffp2 * this.ffp2Price * (1 + this.ffp2PriceDiscount / 100)
     },
-    totalChrgDelivery () {
-      return this.chrgDeliveryPrice * (1 + this.chrgDeliveryPriceDiscount / 100)
+    chrgStandard () {
+      return this.chrg - this.chrgExpress
     },
-    totalFfp2Delivery () {
-      return this.ffp2DeliveryPrice * (1 + this.ffp2DeliveryPriceDiscount / 100)
+    ffp2Standard () {
+      return this.ffp2 - this.ffp2Express
+    },
+    totalChrgStandard () {
+      return this.chrgStandardPrice * (1 + this.chrgStandardPriceDiscount / 100)
+    },
+    totalChrgExpress () {
+      return this.chrgExpressPrice * this.chrgExpress * (1 + this.chrgExpressPriceDiscount / 100)
+    },
+    totalFfp2Standard () {
+      return this.ffp2StandardPrice * this.ffp2Express * (1 + this.ffp2StandardPriceDiscount / 100)
+    },
+    totalFfp2Express () {
+      return this.ffp2ExpressPrice * (1 + this.ffp2ExpressPriceDiscount / 100)
     },
     total_HT () {
-      return this.totalChrg + this.totalFfp2 + this.totalChrgDelivery + this.totalFfp2Delivery
+      return this.totalChrg + this.totalFfp2 + this.totalChrgStandard + this.totalFfp2Standard + this.totalFfp2Standard + this.totalChrgExpress + this.totalFfp2Express
     },
     total_TVA () {
-      return (this.totalChrg + this.totalFfp2) * 0.055 + (this.totalChrgDelivery + this.totalFfp2Delivery) * 0.2
+      return (this.totalChrg + this.totalFfp2) * 0.055 + (this.totalChrgStandard + this.totalFfp2Standard + this.totalChrgExpress + this.totalFfp2Express) * 0.2
     },
     total_TTC () {
       return this.total_HT + this.total_TVA
@@ -75,11 +105,22 @@ export default {
       this.getInfo().then(() => {
         this.getDealUserProduct().then(() => {
           this.setQuote()
+          if (this.$store.getters.qb !== '') {
+            console.log(this.$store.getters.qb)
+          }
         })
       })
     })
   },
   methods: {
+    test () {
+      this.$store.dispatch('qbReAuth')
+    },
+    connectQb () {
+      window.location.href = 'https://www.supply.medicalhero.fr/api/qb/authUri'
+      // window.open('https://www.supply.medicalhero.fr/api/qb/authUri', '_blank')
+      // window.open('https://www.supply.medicalhero.fr/api/qb/authUri', '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')
+    },
     getInfo () {
       return new Promise((resolve, reject) => {
         this.$http.get('info').then((res) => {
@@ -106,6 +147,8 @@ export default {
                 this.product = product.data
                 this.chrg = product.data.chrg
                 this.ffp2 = product.data.ffp2
+                this.chrgExpress = product.data.chrgExpress
+                this.ffp2Express = product.data.ffp2Express
               }
               resolve()
             })
@@ -115,38 +158,49 @@ export default {
     },
     setQuote () {
       if (this.chrg >= 1000000) {
-        this.chrgDeliveryPrice = this.info.chrgDeliveryPrice[3]
-        this.chrgPrice = this.info.chrgPrice[4]
+        this.chrgStandardPrice = this.info.chrg.standardPrice[3]
+        this.chrgExpressPrice = this.info.chrg.expressPrice[3]
+        this.chrgPrice = this.info.chrg.price[4]
       } else if (this.chrg >= 100000) {
-        this.chrgDeliveryPrice = this.info.chrgDeliveryPrice[3]
-        this.chrgPrice = this.info.chrgPrice[3]
+        this.chrgStandardPrice = this.info.chrg.standardPrice[3]
+        this.chrgExpressPrice = this.info.chrg.expressPrice[3]
+        this.chrgPrice = this.info.chrg.price[3]
       } else if (this.chrg >= 20000) {
-        this.chrgDeliveryPrice = this.info.chrgDeliveryPrice[2]
-        this.chrgPrice = this.info.chrgPrice[2]
+        this.chrgStandardPrice = this.info.chrg.standardPrice[2]
+        this.chrgExpressPrice = this.info.chrg.expressPrice[2]
+        this.chrgPrice = this.info.chrg.price[2]
       } else if (this.chrg >= 10000) {
-        this.chrgDeliveryPrice = this.info.chrgDeliveryPrice[1]
-        this.chrgPrice = this.info.chrgPrice[1]
+        this.chrgStandardPrice = this.info.chrg.standardPrice[1]
+        this.chrgExpressPrice = this.info.chrg.expressPrice[1]
+        this.chrgPrice = this.info.chrg.price[1]
       } else if (this.chrg >= 2000) {
-        this.chrgDeliveryPrice = this.info.chrgDeliveryPrice[0]
-        this.chrgPrice = this.info.chrgPrice[0]
+        this.chrgStandardPrice = this.info.chrg.standardPrice[0]
+        this.chrgExpressPrice = this.info.chrg.expressPrice[0]
+        this.chrgPrice = this.info.chrg.price[0]
       } else {
-        this.chrgDeliveryPrice = 0
+        this.chrgStandardPrice = 0
+        this.chrgExpressPrice = 0
         this.chrgPrice = 0
       }
       if (this.ffp2 >= 1000000) {
-        this.ffp2DeliveryPrice = this.info.ffp2DeliveryPrice[2]
-        this.ffp2Price = this.info.ffp2Price[3]
+        this.ffp2StandardPrice = this.info.ffp2.standardPrice[2]
+        this.ffp2ExpressPrice = this.info.ffp2.expressPrice[2]
+        this.ffp2Price = this.info.ffp2.price[3]
       } else if (this.ffp2 >= 100000) {
-        this.ffp2DeliveryPrice = this.info.ffp2DeliveryPrice[2]
-        this.ffp2Price = this.info.ffp2Price[2]
+        this.ffp2StandardPrice = this.info.ffp2.standardPrice[2]
+        this.ffp2ExpressPrice = this.info.ffp2.expressPrice[2]
+        this.ffp2Price = this.info.ffp2.price[2]
       } else if (this.ffp2 >= 10000) {
-        this.ffp2DeliveryPrice = this.info.ffp2DeliveryPrice[1]
-        this.ffp2Price = this.info.ffp2Price[1]
+        this.ffp2StandardPrice = this.info.ffp2.standardPrice[1]
+        this.ffp2ExpressPrice = this.info.ffp2.expressPrice[1]
+        this.ffp2Price = this.info.ffp2.price[1]
       } else if (this.ffp2 >= 600) {
-        this.ffp2DeliveryPrice = this.info.ffp2DeliveryPrice[0]
-        this.ffp2Price = this.info.ffp2Price[0]
+        this.ffp2StandardPrice = this.info.ffp2.standardPrice[0]
+        this.ffp2ExpressPrice = this.info.ffp2.expressPrice[0]
+        this.ffp2Price = this.info.ffp2.price[0]
       } else {
-        this.ffp2DeliveryPrice = 0
+        this.ffp2StandardPrice = 0
+        this.ffp2ExpressPrice = 0
         this.ffp2Price = 0
       }
     },
@@ -159,7 +213,8 @@ export default {
             lastName: this.user.lastName,
             company: this.user.company,
             phone: this.user.phone,
-            mail: this.user.mail
+            mail: this.user.mail,
+            address: this.user.address[0]
           }).then(customerId => {
             this.$http.post('user/addPass', {
               userId: this.user._id,
@@ -191,14 +246,20 @@ export default {
           customerId: this.user.customerId,
           chrg: this.chrg,
           ffp2: this.ffp2,
+          chrgExpress: this.chrgExpress,
+          ffp2Express: this.ffp2Express,
           chrgPrice: this.chrgPrice,
           ffp2Price: this.ffp2Price,
           chrgPriceDiscount: this.chrgPriceDiscount,
           ffp2PriceDiscount: this.ffp2PriceDiscount,
-          chrgDeliveryPrice: this.totalChrgDelivery,
-          ffp2DeliveryPrice: this.totalFfp2Delivery,
-          chrgDeliveryPriceDiscount: this.chrgDeliveryPriceDiscount,
-          ffp2DeliveryPriceDiscount: this.ffp2DeliveryPriceDiscount
+          chrgStandardPrice: this.chrgStandardPrice,
+          ffp2StandardPrice: this.ffp2StandardPrice,
+          chrgStandardPriceDiscount: this.chrgStandardPriceDiscount,
+          ffp2StandardPriceDiscount: this.ffp2StandardPriceDiscount,
+          chrgExpressPrice: this.chrgExpressPrice,
+          ffp2ExpressPrice: this.ffp2ExpressPrice,
+          chrgExpressPriceDiscount: this.chrgExpressPriceDiscount,
+          ffp2ExpressPriceDiscount: this.ffp2ExpressPriceDiscount
         }).then(result => {
           this.$http.post('deal/quote', {
             dealId: this.dealId,

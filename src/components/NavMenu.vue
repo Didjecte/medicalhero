@@ -5,7 +5,7 @@
         <el-row type="flex" class="row-bg" justify="space-between" align="middle">
           <span style="display:inline-block;">
             <router-link class="logo-text" to="/">
-              Stop-covid19.fr
+              MedicalHero.fr
             </router-link>
           </span>
           <!-- not connected -->
@@ -63,7 +63,7 @@
       <simplebar style="height:100%" id="scrollBar">
         <router-view></router-view>
         <el-footer class="color-text-regular">
-          Copyright © 2020 - Medical Hero SAS. All rights reserved. <router-link to="/cgv">Condition Générale de Vente</router-link>
+          Copyright © 2020 - Medical Hero SAS. All rights reserved. <a href="https://medicalhero.fr/cgv" target="_blank">Condition Générale de Vente</a>
         </el-footer>
       </simplebar>
     </div>

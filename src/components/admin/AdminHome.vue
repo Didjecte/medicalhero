@@ -153,5 +153,4 @@ export default {
     display:inline-block;
     width:120%;
   }
-
 </style>

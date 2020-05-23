@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    status: '', /* 请求的状态 */
+    status: '',
     token: window.localStorage.getItem('token') || '',
     userId: '', /* 用户的ID */
     permission: 0, /* 账户0什么都不能做 账户1做少东西 账户2做很多东西 */

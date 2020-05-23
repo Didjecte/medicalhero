@@ -141,7 +141,7 @@ export default {
 
   .el-submenu__title {
     border-bottom: none !important;
-    padding: 0 0 0 0 !important;
+    padding: 0px 0px 0px 0px !important;
   }
 
   .el-menu--horizontal {

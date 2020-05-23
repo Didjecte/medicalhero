@@ -11,6 +11,7 @@ import Test from '../components/admin/Test.vue'
 import DealOne from '../components/admin/DealOne.vue'
 import UserHome from '../components/user/UserHome.vue'
 import NotFound from '../components/NotFound.vue'
+import QbConnect from '../components/QbConnect.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,7 @@ const routes = [
     children: [
       { path: '/', redirect: '/login' },
       { path: '/devis', name: 'Devis', component: FormData },
+      { path: '/qbConnect', name: 'QbConnect', component: QbConnect },
       { path: '/validationDevis', name: 'ValidationDevis', component: Thank },
       {
         path: '/login',
@@ -43,7 +45,8 @@ const routes = [
       {
         path: '/test',
         name: 'Test',
-        component: Test
+        component: Test,
+        beforeEnter
       },
       {
         path: '/deal/:dealId',
@@ -72,31 +75,48 @@ async function beforeEnter (to, from, next) {
       if (store.getters.permission !== 0) {
         if (store.getters.permission < 512 && store.getters.permission >= 2) {
           if (to.path === '/admin' ||
-              to.path === '/test') {
+              to.path === '/test' ||
+              to.path === '/deal' ||
+              to.path === '/login') {
             next('/user')
           } else {
             next()
           }
-        } else {
-          if (to.path === '/user') {
+        } else if (store.getters.permission >= 512 && store.getters.permission >= 2) {
+          if (to.path === '/user' ||
+          to.path === '/login') {
             next('/admin')
+          } else {
+            next()
+          }
+        } else {
+          if (to.path !== '/login') {
+            next('/login')
           } else {
             next()
           }
         }
       } else {
         axios.defaults.headers.common.Authorization = window.localStorage.getItem('token')
-        var hasPermission = await store.dispatch('reAuth')
+        var hasPermission = await store.dispatch('reAuth', window.localStorage.getItem('token'))
         if (hasPermission.data.permission < 512 && store.getters.permission >= 2) {
           if (to.path === '/admin' ||
-              to.path === '/test') {
+              to.path === '/test' ||
+              to.path === '/login') {
             next('/user')
           } else {
             next()
           }
-        } else {
-          if (to.path === '/user') {
+        } else if (hasPermission.data.permission >= 512 && store.getters.permission >= 2) {
+          if (to.path === '/user' ||
+          to.path === '/login') {
             next('/admin')
+          } else {
+            next()
+          }
+        } else {
+          if (to.path !== '/login') {
+            next('/login')
           } else {
             next()
           }

@@ -4,36 +4,63 @@
       title="MedicalHero - Dashboard"
       />
     <h1 style="margin:30px 0;">Dashboard Admin</h1>
-    <router-link to="/deal"><el-button type="primary" style="margin:60px 0 60px 0;">Primary</el-button></router-link>
+    <!-- <el-button type="primary" style="margin:60px 0 60px 0;">Créer un Deal</el-button> -->
     <div>
       <el-table
         :data="tableData"
         :default-sort = "{prop: 'dateStart', order: 'descending'}"
         style="width: 100%"
       ><!--prop按照date进行排序，order中的descending降序、ascending升序-->
-        <el-table-column prop="contact" label="Contact" sortable></el-table-column>
-        <el-table-column prop="company" label="Company" sortable></el-table-column>
+        <el-table-column prop="contact" label="Contact" sortable>
+          <template slot-scope="scope">
+            <router-link :to="'/deal/' + scope.row.dealId">{{scope.row.contact}}</router-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="company" label="Company" sortable>
+          <template slot-scope="scope">
+            <router-link :to="'/deal/' + scope.row.dealId">{{scope.row.company}}</router-link>
+          </template>
+        </el-table-column>
         <el-table-column prop="stage" label="Stage"
-                         :filters="[{ text: '1-quote', value: '1-quote' }, { text: '2-invoice', value: '2-invoice' }]"
+                         :filters="[
+                         { text: 'Devis', value: 'Devis' },
+                         { text: 'Facture Acompte', value: 'Facture Acompte' },
+                         { text: 'Livraison', value: 'Livraison' },
+                         { text: 'Facture Solde', value: 'Facture Solde' },
+                         { text: 'Finis', value: 'Finis' }]"
                          :filter-method="filterStage"
                          filter-placement="bottom-end">
           <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.stage === '1-quote' ? 'primary' : 'success'"
-              disable-transitions>{{scope.row.stage}}</el-tag>
+            <router-link :to="'/deal/' + scope.row.dealId">
+              <el-tag
+                :color="changeColor(scope.row.stage)"
+                effect="dark"
+                disable-transitions> {{scope.row.stage}}
+              </el-tag><!--scope.row.stage === '1-quote' ? 'primary' : 'success'-->
+            </router-link>
           </template>
         </el-table-column>
         <el-table-column prop="status" label="Status"
-                         :filters="[{ text: 'waiting', value: 'waiting' }, { text: 'to do', value: 'to do' }]"
+                         :filters="[
+                         { text: 'To Do', value: 'To Do' },
+                         { text: 'WIP', value: 'WIP' },
+                         { text: 'Done', value: 'Done' }]"
                          :filter-method="filterStatus"
                          filter-placement="bottom-end">
           <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.status === 'to do' ? 'primary' : 'success'"
-              disable-transitions>{{scope.row.status}}</el-tag>
+            <router-link :to="'/deal/' + scope.row.dealId">
+              <el-tag
+                :type="scope.row.status === 'To Do' ? 'warning' : 'success'"
+                disable-transitions>{{scope.row.status}}
+              </el-tag>
+            </router-link>
           </template>>
         </el-table-column>
-        <el-table-column prop="dateStart" label="Date" sortable></el-table-column>
+        <el-table-column prop="dateStart" label="Date" sortable>
+          <template slot-scope="scope">
+            <router-link :to="'/deal/' + scope.row.dealId">{{scope.row.dateStart}}</router-link>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -45,40 +72,19 @@ export default {
   data () {
     return {
       tableData: []
-
-      // tableData: [
-      //   {
-      //     contact: 'didier HU',
-      //     company: 'MedicalHero',
-      //     stage: '1-quote',
-      //     status: 'waiting',
-      //     dateStart: '06/05/2020'
-      //   },
-      //   {
-      //     contact: 'Aidier HU',
-      //     company: 'BedicalHero',
-      //     stage: '2-invoice',
-      //     status: 'to do',
-      //     dateStart: '04/05/2020'
-      //   },
-      //   {
-      //     contact: 'Zidier HU',
-      //     company: 'AedicalHero',
-      //     stage: '2-invoice',
-      //     status: 'to do',
-      //     dateStart: '01/05/2020'
-      //   }
-      // ]
     }
+  },
+  computed: {
   },
   mounted () {
     this.getDeal()
+    this.changeColor()
   },
   methods: {
-    filterStage (value, row) {
+    filterStage (value, row) { /* 阶段 */
       return row.stage === value
     },
-    filterStatus (value, row) {
+    filterStatus (value, row) { /* 状态 */
       return row.status === value
     },
     getDeal () {
@@ -122,6 +128,15 @@ export default {
         case 6: return 'Facture Solde'
         case 7: return 'Finis'
       }
+    },
+    changeColor (color) {
+      switch (color) {
+        case 'Devis': return '#dbbaff'
+        case 'Facture Acompte': return '#bac3ff'
+        case 'Livraison': return '#baf1ff'
+        case 'Facture Solde': return '#baffde'
+        case 'Finis': return '#acffab'
+      }
     }
   }
 }
@@ -130,6 +145,13 @@ export default {
 <style scoped>
   .context_top{
     margin-top:60px;
+  }
+  .el-tag--dark{
+    border-color:white;
+  }
+  tbody a{
+    display:inline-block;
+    width:120%;
   }
 
 </style>

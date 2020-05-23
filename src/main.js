@@ -14,7 +14,6 @@ import axios from 'axios'
 import { currency } from './util/currency' // 全局过滤器的使用
 import simplebar from 'simplebar-vue' // simplebar
 import 'simplebar/dist/simplebar.min.css'
-
 // axios.interceptors.request.use(config => {
 //   config.headers.Authorization = window.localStorage.getItem('token')
 //   return config

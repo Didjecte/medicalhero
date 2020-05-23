@@ -49,13 +49,13 @@ const routes = [
         beforeEnter
       },
       {
-        path: '/deal',
+        path: '/deal/:dealId',
         name: 'DealOne',
         component: DealOne,
         beforeEnter
       },
       {
-        path: '*',
+        path: '*', // *表示匹配所有路由,只要是匹配不到的路由,都会跳到这个组件去
         name: 'NotFound',
         component: NotFound
       }

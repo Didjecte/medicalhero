@@ -4,7 +4,7 @@
       title="MedicalHero - Dashboard"
       />
     <h1 style="margin:30px 0;">Dashboard Admin</h1>
-    <router-link to="/deal"><el-button type="primary" style="margin:60px 0 60px 0;">Primary</el-button></router-link>
+    <!-- <el-button type="primary" style="margin:60px 0 60px 0;">Créer un Deal</el-button> -->
     <div>
       <el-table
         :data="tableData"
@@ -13,12 +13,12 @@
       ><!--prop按照date进行排序，order中的descending降序、ascending升序-->
         <el-table-column prop="contact" label="Contact" sortable>
           <template slot-scope="scope">
-            <router-link :to="'/deal/' + scope.row.dealId" target="_blank">{{scope.row.contact}}</router-link>
+            <router-link :to="'/deal/' + scope.row.dealId">{{scope.row.contact}}</router-link>
           </template>
         </el-table-column>
         <el-table-column prop="company" label="Company" sortable>
           <template slot-scope="scope">
-            <router-link :to="'/deal/' + scope.row.dealId" target="_blank">{{scope.row.company}}</router-link>
+            <router-link :to="'/deal/' + scope.row.dealId">{{scope.row.company}}</router-link>
           </template>
         </el-table-column>
         <el-table-column prop="stage" label="Stage"
@@ -31,7 +31,7 @@
                          :filter-method="filterStage"
                          filter-placement="bottom-end">
           <template slot-scope="scope">
-            <router-link :to="'/deal/' + scope.row.dealId" target="_blank">
+            <router-link :to="'/deal/' + scope.row.dealId">
               <el-tag
                 :color="changeColor(scope.row.stage)"
                 effect="dark"
@@ -48,7 +48,7 @@
                          :filter-method="filterStatus"
                          filter-placement="bottom-end">
           <template slot-scope="scope">
-            <router-link :to="'/deal/' + scope.row.dealId" target="_blank">
+            <router-link :to="'/deal/' + scope.row.dealId">
               <el-tag
                 :type="scope.row.status === 'To Do' ? 'warning' : 'success'"
                 disable-transitions>{{scope.row.status}}
@@ -58,7 +58,7 @@
         </el-table-column>
         <el-table-column prop="dateStart" label="Date" sortable>
           <template slot-scope="scope">
-            <router-link :to="'/deal/' + scope.row.dealId" target="_blank">{{scope.row.dateStart}}</router-link>
+            <router-link :to="'/deal/' + scope.row.dealId">{{scope.row.dateStart}}</router-link>
           </template>
         </el-table-column>
       </el-table>
@@ -72,30 +72,6 @@ export default {
   data () {
     return {
       tableData: []
-
-      // tableData: [
-      //   {
-      //     contact: 'didier HU',
-      //     company: 'MedicalHero',
-      //     stage: '1-quote',
-      //     status: 'waiting',
-      //     dateStart: '06/05/2020'
-      //   },
-      //   {
-      //     contact: 'Aidier HU',
-      //     company: 'BedicalHero',
-      //     stage: '2-invoice',
-      //     status: 'to do',
-      //     dateStart: '04/05/2020'
-      //   },
-      //   {
-      //     contact: 'Zidier HU',
-      //     company: 'AedicalHero',
-      //     stage: '2-invoice',
-      //     status: 'to do',
-      //     dateStart: '01/05/2020'
-      //   }
-      // ]
     }
   },
   computed: {
@@ -125,7 +101,6 @@ export default {
                 dealId: deal._id
               })
             }
-            console.log('tableData', this.tableData)
           })
         }))
       })

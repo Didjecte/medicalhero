@@ -11,9 +11,6 @@ import Test from '../components/admin/Test.vue'
 import DealOne from '../components/admin/DealOne.vue'
 import UserHome from '../components/user/UserHome.vue'
 import NotFound from '../components/NotFound.vue'
-import pdf from '../components/test/testPDF.vue'
-import ttt from '../components/test/vuePDF.vue'
-import hello from '../components/test/HelloWorld.vue'
 
 Vue.use(VueRouter)
 
@@ -54,9 +51,6 @@ const routes = [
         component: DealOne,
         beforeEnter
       },
-      { path: '/pdf', component: pdf },
-      { path: '/ttt', component: ttt },
-      { path: '/hello', component: hello },
       {
         path: '*', // *表示匹配所有路由,只要是匹配不到的路由,都会跳到这个组件去
         name: 'NotFound',

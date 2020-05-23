@@ -11,7 +11,6 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "element-ui": "^2.13.1",
-    "pdfjs-dist": "^2.3.200",
     "pdfobject": "^2.1.1",
     "simplebar-vue": "^1.4.0",
     "vue": "^2.6.11",

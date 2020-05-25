@@ -185,7 +185,7 @@
             </el-row>
             <el-row type="flex" justify="center" align="middle" class="contact_input" :gutter="20">
               <el-col :span="24">
-                <el-form-item prop="street" label="Adresse">
+                <el-form-item prop="street" label="Adresse de livraison">
                   <el-input v-model="userForm.street"></el-input>
                 </el-form-item>
               </el-col>

@@ -48,7 +48,7 @@
                 :info="info"
                 :user="user"
                 :address="address"
-                :dealID="dealId"
+                :dealId="dealId"
                 :deal="deal"
                 :product="product"
                 v-on:submitQuote="onQuoteSubmit">
@@ -84,7 +84,6 @@ export default {
       dealId: '',
       deal: null,
       product: null,
-      password: '',
 
       // quoteForm: {
       //   chrg: 0,
@@ -240,8 +239,10 @@ export default {
       }
     },
     onQuoteSubmit() {
+      console.log('test')
       this.getInfo().then(() => {
         this.getDealUserProduct().then(() => {
+          console.log(this.deal.stage)
           this.setStage()
         })
       })

@@ -257,17 +257,10 @@ export default {
       this.quoteForm.chrgExpress = this.product.chrgExpress
       this.quoteForm.ffp2Express = this.product.ffp2Express
       this.setQuote()
+      console.log(this.dealId)
     })
   },
   methods: {
-    test () {
-      this.$store.dispatch('qbReAuth')
-    },
-    connectQb () {
-      window.location.href = 'https://www.supply.medicalhero.fr/api/qb/authUri'
-      // window.open('https://www.supply.medicalhero.fr/api/qb/authUri', '_blank')
-      // window.open('https://www.supply.medicalhero.fr/api/qb/authUri', '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')
-    },
     setQuote () {
       if (this.quoteForm.chrg >= 1000000) {
         this.quoteForm.chrgStandardPrice = this.info.chrg.standardPrice[3]
@@ -320,6 +313,7 @@ export default {
       // create Customer on Quickbooks and add password
       return new Promise((resolve, reject) => {
         if (!this.user.customerId) {
+          console.log('customers')
           this.$http.post('qb/createCustomer', {
             firstName: this.user.firstName,
             lastName: this.user.lastName,

@@ -83,6 +83,9 @@ async function beforeEnter (to, from, next) {
             next()
           }
         } else if (store.getters.permission >= 512 && store.getters.permission >= 2) {
+          // if (!window.localStorage.getItem('qb')) {
+          //   window.location.href = 'https://www.supply.medicalhero.fr/api/qb/authUri'
+          // }
           if (to.path === '/user' ||
           to.path === '/login') {
             next('/admin')
@@ -108,6 +111,9 @@ async function beforeEnter (to, from, next) {
             next()
           }
         } else if (hasPermission.data.permission >= 512 && store.getters.permission >= 2) {
+          // if (!window.localStorage.getItem('qb')) {
+          //   window.location.href = 'https://www.supply.medicalhero.fr/api/qb/authUri'
+          // }
           if (to.path === '/user' ||
           to.path === '/login') {
             next('/admin')

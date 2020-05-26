@@ -18,6 +18,7 @@ import 'simplebar/dist/simplebar.min.css'
 //   return config
 // })
 
+axios.defaults.baseURL = 'https://www.supply.medicalhero.fr/api/'
 // reauth user
 const token = window.localStorage.getItem('token')
 if (token) {
@@ -33,7 +34,6 @@ if (qb) {
   store.dispatch('qbReAuth')
 }
 
-axios.defaults.baseURL = 'https://www.supply.medicalhero.fr/api/'
 // axios.defaults.baseURL = 'https://www.medicalhero.fr/api/'
 // axios.defaults.baseURL = 'http://localhost:8444/'
 

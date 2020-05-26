@@ -8,7 +8,7 @@ import Login from '../components/Login.vue'
 import Thank from '../components/Thank.vue'
 import AdminHome from '../components/admin/AdminHome.vue'
 import Test from '../components/admin/Test.vue'
-import DealOne from '../components/admin/DealOne.vue'
+import Deal from '../components/admin/Deal.vue'
 import UserHome from '../components/user/UserHome.vue'
 import NotFound from '../components/NotFound.vue'
 import QbConnect from '../components/QbConnect.vue'
@@ -50,8 +50,8 @@ const routes = [
       },
       {
         path: '/deal/:dealId',
-        name: 'DealOne',
-        component: DealOne,
+        name: 'Deal',
+        component: Deal,
         beforeEnter
       },
       {

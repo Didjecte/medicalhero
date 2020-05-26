@@ -95,7 +95,6 @@ export default new Vuex.Store({
     },
     qbAuthUri ({ commit }, resp) {
       return new Promise((resolve, reject) => {
-        console.log('test')
         console.log(resp)
         window.localStorage.setItem('qb', JSON.stringify(resp))
         commit('set_qb', resp)
@@ -111,6 +110,7 @@ export default new Vuex.Store({
             resolve()
           })
           .catch(err => {
+            console.log(err)
             reject(err)
           })
       })

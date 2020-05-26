@@ -274,23 +274,23 @@
                 </el-col>
               </el-row>
             </div>
-            <div>
-            <p style="font-size:12px"><el-checkbox v-model="express">
-              Livraison Express:</el-checkbox> Réception sous 2j dans la limite du stock disponible.
-            </p>
-            </div>
             <el-collapse-transition>
               <div v-show="isEmpty">
                 <el-alert title="La commande ne peut être vide." type="error" :closable="false"></el-alert>
               </div>
             </el-collapse-transition>
-            <el-collapse-transition>
+            <!-- <div>
+              <p style="font-size:12px"><el-checkbox v-model="express">
+                Livraison Express:</el-checkbox> Réception sous 2j dans la limite du stock disponible.
+              </p>
+            </div> -->
+            <!-- <el-collapse-transition>
               <div v-show="express">
                 <div class="c_side">
                   <el-row type="flex" justify="space-between" align="middle">
                     <el-col>
                       <div class="c_text">
-                        <span>Masques Chirurgicaux (Max 20000)：</span><span>{{express_chrg}}</span>
+                        <span>Express: Masques Chirurgicaux (Max 20000)：</span><span>{{express_chrg}}</span>
                       </div>
                     </el-col>
                     <el-col>
@@ -304,7 +304,7 @@
                   <el-row type="flex" justify="space-between" align="middle">
                     <el-col>
                       <div class="c_text">
-                        <span>Masques FFP2 (Max 9600)：</span><span>{{express_ffp2}}</span>
+                        <span>Express: Masques FFP2 (Max 9600)：</span><span>{{express_ffp2}}</span>
                       </div>
                     </el-col>
                     <el-col>
@@ -321,7 +321,7 @@
                   </el-row>
                 </div>
               </div>
-            </el-collapse-transition>
+            </el-collapse-transition> -->
             <div>
               <p style="color:gray;font-size:12px;">🚀<i>Contactez nous si vous avez des questions.<br/>
               Par mail : <a href="mailto:contact@medicalhero.fr" target="_blank">contact@medicalhero.fr</a><br/>
@@ -368,7 +368,7 @@
               </tr>
             </tbody>
           </table>
-          <el-collapse-transition>
+          <!-- <el-collapse-transition>
             <div v-show="express">
               <table>
                 <tbody>
@@ -387,7 +387,7 @@
                 </tbody>
               </table>
             </div>
-          </el-collapse-transition>
+          </el-collapse-transition> -->
           <table style="border-bottom: 1px solid rgba(232, 232, 232, 1)">
             <tbody>
               <tr>
@@ -473,7 +473,7 @@ export default {
       /* 口罩数量 */
       num1: 600,
       num2: 2000,
-      express: true,
+      express: false,
       // flag: false,
       /* 口罩数组单价 */
       price1: [1, 2, 3, 4],
@@ -876,7 +876,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .active{
   color:#6ebcc5;
 }

@@ -18,7 +18,7 @@ export default {
         const data = this.$route.query
         console.log(data)
         this.$store.dispatch('qbAuthUri', data).then(() => {
-          this.$router.push('/test')
+          this.$router.push('/admin')
         })
       } else {
         this.$router.push('/')

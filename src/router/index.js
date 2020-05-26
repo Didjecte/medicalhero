@@ -8,7 +8,7 @@ import Login from '../components/Login.vue'
 import Thank from '../components/Thank.vue'
 import AdminHome from '../components/admin/AdminHome.vue'
 import Test from '../components/admin/Test.vue'
-import DealOne from '../components/admin/DealOne.vue'
+import Deal from '../components/admin/Deal.vue'
 import UserHome from '../components/user/UserHome.vue'
 import NotFound from '../components/NotFound.vue'
 import QbConnect from '../components/QbConnect.vue'
@@ -50,8 +50,8 @@ const routes = [
       },
       {
         path: '/deal/:dealId',
-        name: 'DealOne',
-        component: DealOne,
+        name: 'Deal',
+        component: Deal,
         beforeEnter
       },
       {
@@ -83,6 +83,9 @@ async function beforeEnter (to, from, next) {
             next()
           }
         } else if (store.getters.permission >= 512 && store.getters.permission >= 2) {
+          // if (!window.localStorage.getItem('qb')) {
+          //   window.location.href = 'https://www.supply.medicalhero.fr/api/qb/authUri'
+          // }
           if (to.path === '/user' ||
           to.path === '/login') {
             next('/admin')
@@ -108,6 +111,9 @@ async function beforeEnter (to, from, next) {
             next()
           }
         } else if (hasPermission.data.permission >= 512 && store.getters.permission >= 2) {
+          // if (!window.localStorage.getItem('qb')) {
+          //   window.location.href = 'https://www.supply.medicalhero.fr/api/qb/authUri'
+          // }
           if (to.path === '/user' ||
           to.path === '/login') {
             next('/admin')

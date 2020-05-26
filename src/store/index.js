@@ -95,8 +95,6 @@ export default new Vuex.Store({
     },
     qbAuthUri ({ commit }, resp) {
       return new Promise((resolve, reject) => {
-        console.log('test')
-        console.log(resp)
         window.localStorage.setItem('qb', JSON.stringify(resp))
         commit('set_qb', resp)
         resolve(resp)
@@ -104,13 +102,13 @@ export default new Vuex.Store({
     },
     qbReAuth ({ commit }) {
       return new Promise((resolve, reject) => {
-        console.log(this.getters.qb)
         axios({ url: 'qb/refreshAccessToken', data: this.getters.qb, method: 'POST' })
           .then(() => {
             console.log('no problem')
             resolve()
           })
           .catch(err => {
+            console.log(err)
             reject(err)
           })
       })

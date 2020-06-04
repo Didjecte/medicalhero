@@ -241,192 +241,305 @@
       </div>
     </div>
     <div v-if="state === 'estimate'">
-      <div class="c_top">
-        <div class="container">
-          <h2>Estimation tarifaire</h2>
-          <h4>Produits demandés</h4>
-          <div>
-            <div class="c_side">
-              <el-row type="flex" justify="space-between" align="middle">
-                <el-col>
-                  <div class="c_text">
-                    <span>Masques Chirurgicaux (Lots de 2000)：</span><span>{{num2}}</span>
-                  </div>
-                </el-col>
-                <el-col>
-                  <div class="block">
-                    <el-input-number v-model="num2" :step="2000" step-strictly :min="0" @change="change2"></el-input-number>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="c_side">
-              <el-row type="flex" justify="space-between" align="middle">
-                <el-col>
-                  <div class="c_text">
-                    <span>Masques FFP2 (Lots de 600)：</span><span>{{num1}}</span>
-                  </div>
-                </el-col>
-                <el-col>
-                  <div class="block">
-                    <el-input-number v-model="num1" :step="600" step-strictly :min="0" @change="change1"></el-input-number>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            <el-collapse-transition>
-              <div v-show="isEmpty">
-                <el-alert title="La commande ne peut être vide." type="error" :closable="false"></el-alert>
-              </div>
-            </el-collapse-transition>
-            <!-- <div>
-              <p style="font-size:12px"><el-checkbox v-model="express">
-                Livraison Express:</el-checkbox> Réception sous 2j dans la limite du stock disponible.
-              </p>
-            </div> -->
-            <!-- <el-collapse-transition>
-              <div v-show="express">
-                <div class="c_side">
-                  <el-row type="flex" justify="space-between" align="middle">
-                    <el-col>
-                      <div class="c_text">
-                        <span>Express: Masques Chirurgicaux (Max 20000)：</span><span>{{express_chrg}}</span>
-                      </div>
-                    </el-col>
-                    <el-col>
-                      <div class="block">
-                        <el-input-number v-model="express_chrg" :step="2000" step-strictly :min="0" :max="chrg_max"></el-input-number>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </div>
-                <div class="c_side">
-                  <el-row type="flex" justify="space-between" align="middle">
-                    <el-col>
-                      <div class="c_text">
-                        <span>Express: Masques FFP2 (Max 9600)：</span><span>{{express_ffp2}}</span>
-                      </div>
-                    </el-col>
-                    <el-col>
-                      <div class="block">
-                        <el-input-number
-                          v-model="express_ffp2"
-                          :step="600"
-                          step-strictly
-                          :min="0"
-                          :max="ffp2_max">
-                        </el-input-number>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </div>
-              </div>
-            </el-collapse-transition> -->
+      <!-- Mobile -->
+      <div class="hidden-md-and-up">
+        <div class="c_top">
+          <div class="container">
+            <h2>Estimation tarifaire</h2>
             <div>
-              <p style="color:gray;font-size:12px;">🚀<i>Contactez nous si vous avez des questions.<br/>
-              Par mail : <a href="mailto:contact@medicalhero.fr" target="_blank">contact@medicalhero.fr</a><br/>
-              Par téléphone : Anne est à votre disposition du Lundi au Samedi de 9h à 19h, au +33(0)6 46 84 13 45</i></p>
+              <div>
+                <p style="color:gray;font-size:12px;">🚀<i>Contactez nous si vous avez des questions.<br/>
+                Par mail : <a href="mailto:contact@medicalhero.fr" target="_blank">contact@medicalhero.fr</a><br/>
+                Par téléphone : Anne est à votre disposition du Lundi au Samedi de 9h à 19h, au +33(0)6 46 84 13 45</i></p>
+              </div>
+              <el-collapse-transition>
+                <div v-show="isEmpty">
+                  <el-alert title="La commande ne peut être vide." type="error" :closable="false"></el-alert>
+                </div>
+              </el-collapse-transition>
             </div>
           </div>
         </div>
-      </div>
-      <div class="c_middle">
-        <div class="container">
-          <table>
-            <thead>
-              <tr class="t_title">
-                <th class="t_date">PRODUITS / SERVICES</th>
-                <th class="t_center">QTE</th>
-                <th class="t_center">PRIX UNITARE</th>
-                <th class="t_num">MONTANT</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="t_date t_height">Masques Chirurgicaux (Lots de 2000)</td>
-                <td class="t_center t_height">{{num2}}</td>
-                <td class="t_center t_height">{{chrgPrice}}</td>
-                <td class="t_num t_height">{{chrgTotal | currency}}</td>
-              </tr>
-              <tr>
-                <td class="t_date">Masques FFP2 (Lots de 600)</td>
-                <td class="t_center" style="width:300px">{{num1}}</td>
-                <td class="t_center">{{ffp2Price}}</td>
-                <td class="t_num">{{ffp2Total | currency}}</td>
-              </tr>
-              <tr>
-                <td class="t_date">Livraison Standard (7-12j) - Masques chirurgicaux</td>
-                <td class="t_center">{{chrgStandard}}</td>
-                <td class="t_center">{{nationChrg | currency}}</td>
-                <td class="t_num">{{chrgStandard * nationChrg | currency}}</td>
-              </tr>
-              <tr>
-                <td class="t_date">Livraison Standard (7-12j) - Masques FFP2</td>
-                <td class="t_center">{{ffp2Standard}}</td>
-                <td class="t_center">{{nationFFP2 | currency}}</td>
-                <td class="t_num">{{ffp2Standard * nationFFP2 | currency}}</td>
-              </tr>
-            </tbody>
-          </table>
-          <!-- <el-collapse-transition>
-            <div v-show="express">
-              <table>
-                <tbody>
-                  <tr>
-                    <td class="t_date">Livraison Express (2j) - Masques chirurgicaux</td>
-                    <td class="t_center">{{express_chrg}}</td>
-                    <td class="t_center">{{priceEXPchrg}}</td>
-                    <td class="t_num">{{expressTotalChrg | currency}}</td>
-                  </tr>
-                  <tr>
-                    <td class="t_date">Livraison Express Express (2j) - Masques FFP2</td>
-                    <td class="t_center">{{express_ffp2}}</td>
-                    <td class="t_center">{{priceEXPffp2}}</td>
-                    <td class="t_num">{{expressTotalFFP2 | currency}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </el-collapse-transition> -->
-          <table style="border-bottom: 1px solid rgba(232, 232, 232, 1)">
-            <tbody>
-              <tr>
-                <td style="padding:20px 0 10px"><div class="line"></div></td>
-                <td style="padding:20px 0 10px"><div class="line"></div></td>
-                <td style="padding:20px 0 10px"><div class="line"></div></td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr>
-                <td class="t_date t_height"></td>
-                <td class="t_center t_height">TOTAL HT</td>
-                <td class="t_num t_height" style="width:40%">
-                  {{total_HT | currency}}
-                </td>
-              </tr>
-              <tr>
-                <td class="t_date"></td>
-                <td class="t_center">TOTAL TVA</td>
-                <td class="t_num">
-                  {{total_TVA | currency}}
-                </td>
-              </tr>
-              <tr>
-                <td class="t_date"></td>
-                <td class="t_center">TOTAL TTC</td>
-                <td class="t_num t_total" style="width:40%">
-                  {{total_TTC | currency}} EUR
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="c_middle">
+          <div class="container">
+            <table>
+              <thead>
+                <tr class="t_title">
+                  <th class="t_date_mobile">PRODUITS / SERVICES</th>
+                  <th class="t_center_mobile">QTE</th>
+                  <th class="t_center">PRIX UNITAIRE</th>
+                  <th class="t_num_mobile">MONTANT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="t_date_mobile t_height">Masques Chirurgicaux</td>
+                  <td class="t_center_mobile t_height"><el-input-number class="noPadding" v-model="num2" controls-position="right" size="mini" :step="2000" step-strictly :min="0" @change="change2"></el-input-number></td>
+                  <td class="t_center t_height">
+                    <a href="https://medicalhero.fr/index#prix" target="_blank" class="linkNoDeco">
+                      {{chrgPrice | currency}}<i class="el-icon-info" style="color:grey"></i>
+                    </a>
+                  </td>
+                  <td class="t_num_mobile t_height">{{chrgTotal | currency}}</td>
+                </tr>
+                <tr>
+                  <td class="t_date_mobile">Masques FFP2</td>
+                  <td class="t_center_mobile"><el-input-number class="noPadding" v-model="num1" controls-position="right" size="mini" :step="600" step-strictly :min="0" @change="change1"></el-input-number></td>
+                  <td class="t_center">
+                    <a href="https://medicalhero.fr/index#prix" target="_blank" class="linkNoDeco">
+                      {{ffp2Price | currency}}<i class="el-icon-info" style="color:grey"></i>
+                    </a>
+                  </td>
+                  <td class="t_num_mobile">{{ffp2Total | currency}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                </tr>
+                <tr>
+                  <td style="t_date" colspan="4">LIVRAISON</td>
+                </tr>
+                <tr>
+                  <td class="t_date_mobile">Standard (7-12j) - Masques chirurgicaux</td>
+                  <td class="t_center_mobile">{{chrgStandard}}</td>
+                  <td class="t_center">{{nationChrg | currency}}</td>
+                  <td class="t_num_mobile">{{chrgStandard * nationChrg | currency}}</td>
+                </tr>
+                <tr>
+                  <td class="t_date_mobile">Standard (7-12j) - Masques FFP2</td>
+                  <td class="t_center_mobile">{{ffp2Standard}}</td>
+                  <td class="t_center">{{nationFFP2 | currency}}</td>
+                  <td class="t_num_mobile">{{ffp2Standard * nationFFP2 | currency}}</td>
+                </tr>
+                <tr>
+                  <td style="t_date" colspan="4">
+                    <span style="font-size:12px"><el-checkbox v-model="express">
+                      Livraison Express:</el-checkbox> Réception sous 2j dans la limite du stock disponible.
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <el-collapse-transition>
+              <div v-show="express">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td class="t_date_mobile">Express (2j) - Masques chirurgicaux</td>
+                      <td class="t_center_mobile">
+                        <el-input-number v-model="express_chrg" class="noPadding" size="mini" controls-position="right" :step="2000" step-strictly :min="0" :max="chrg_max"></el-input-number>
+                      </td>
+                      <td class="t_center">{{priceEXPchrg}}</td>
+                      <td class="t_num_mobile">{{expressTotalChrg | currency}}</td>
+                    </tr>
+                    <tr>
+                      <td class="t_date_mobile">Express (2j) - Masques FFP2</td>
+                      <td class="t_center_mobile">
+                        <el-input-number v-model="express_ffp2" class="noPadding" size="mini" controls-position="right" :step="600" step-strictly :min="0" :max="ffp2_max"></el-input-number>
+                      </td>
+                      <td class="t_center">{{priceEXPffp2}}</td>
+                      <td class="t_num_mobile">{{expressTotalFFP2 | currency}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </el-collapse-transition>
+            <table style="border-bottom: 1px solid rgba(232, 232, 232, 1)">
+              <tbody>
+                <tr>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td class="t_date_mobile t_height"></td>
+                  <td class="t_center_mobile t_height">TOTAL HT</td>
+                  <td class="t_num_mobile t_height" style="width:40%">
+                    {{total_HT | currency}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="t_date_mobile"></td>
+                  <td class="t_center_mobile">TOTAL TVA</td>
+                  <td class="t_num_mobile">
+                    {{total_TVA | currency}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="t_date_mobile"></td>
+                  <td class="t_center_mobile">TOTAL TTC</td>
+                  <td class="t_num_mobile t_total" style="width:40%">
+                    {{total_TTC | currency}} EUR
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="c_bottom">
+          <div class="container">
+            <el-form :model="userForm" :rules="userFormRules" ref="userFormRef" class="el_form">
+              <div class="c_button" style="width:100%"><el-button @click.stop.prevent="postForm('userFormRef')" native-type="submit" type="primary" :disabled="isEmpty">Recevoir un autre devis</el-button></div>
+            </el-form>
+          </div>
         </div>
       </div>
-      <div class="c_bottom">
-        <div class="container">
-          <el-form :model="userForm" :rules="userFormRules" ref="userFormRef" class="el_form">
-            <div class="c_button" style="width:100%"><el-button @click.stop.prevent="postForm('userFormRef')" native-type="submit" type="primary" :disabled="isEmpty">Recevoir un autre devis</el-button></div>
-          </el-form>
+      
+      <!-- Desktop -->
+      <div class="hidden-sm-and-down">
+        <div class="c_top">
+          <div class="container">
+            <h2>Estimation tarifaire</h2>
+            <div>
+              <div>
+                <p style="color:gray;font-size:12px;">🚀<i>Contactez nous si vous avez des questions.<br/>
+                Par mail : <a href="mailto:contact@medicalhero.fr" target="_blank">contact@medicalhero.fr</a><br/>
+                Par téléphone : Anne est à votre disposition du Lundi au Samedi de 9h à 19h, au +33(0)6 46 84 13 45</i></p>
+              </div>
+              <div>
+              </div>
+              <el-collapse-transition>
+                <div v-show="isEmpty">
+                  <el-alert title="La commande ne peut être vide." type="error" :closable="false"></el-alert>
+                </div>
+              </el-collapse-transition>
+            </div>
+          </div>
+        </div>
+        <div class="c_middle">
+          <div class="container">
+            <table>
+              <thead>
+                <tr class="t_title">
+                  <th class="t_date">PRODUITS / SERVICES</th>
+                  <th class="t_center">QTE</th>
+                  <th class="t_center">PRIX UNITAIRE</th>
+                  <th class="t_num">MONTANT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="t_date t_height">Masques Chirurgicaux (Lots de 2000)</td>
+                  <td class="t_center t_height"><el-input-number v-model="num2" size="medium" :step="2000" step-strictly :min="0" @change="change2"></el-input-number></td>
+                  <td class="t_center t_height">
+                    <el-tooltip class="item" effect="dark" content="Voir la grille tarifaire" placement="bottom">
+                      <a href="https://medicalhero.fr/index#prix" target="_blank" class="linkNoDeco">
+                        {{chrgPrice | currency}}<i class="el-icon-info" style="color:grey"></i>
+                      </a>
+                    </el-tooltip>
+                  </td>
+                  <td class="t_num t_height">{{chrgTotal | currency}}</td>
+                </tr>
+                <tr>
+                  <td class="t_date">Masques FFP2 (Lots de 600)</td>
+                  <td class="t_center"><el-input-number v-model="num1" size="medium" :step="600" step-strictly :min="0" @change="change1"></el-input-number></td>
+                  <td class="t_center">
+                    <a href="https://medicalhero.fr/index#prix" target="_blank" class="linkNoDeco">
+                      {{ffp2Price | currency}}<i class="el-icon-info" style="color:grey"></i>
+                    </a>
+                  </td>
+                  <td class="t_num">{{ffp2Total | currency}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                </tr>
+                <tr>
+                  <td style="t_date" colspan="4">
+                    LIVRAISON
+                  </td>
+                </tr>
+                <tr>
+                  <td class="t_date">Standard (7-12j) - Masques chirurgicaux</td>
+                  <td class="t_center">{{chrgStandard}}</td>
+                  <td class="t_center">{{nationChrg | currency}}</td>
+                  <td class="t_num">{{chrgStandard * nationChrg | currency}}</td>
+                </tr>
+                <tr>
+                  <td class="t_date">Standard (7-12j) - Masques FFP2</td>
+                  <td class="t_center">{{ffp2Standard}}</td>
+                  <td class="t_center">{{nationFFP2 | currency}}</td>
+                  <td class="t_num">{{ffp2Standard * nationFFP2 | currency}}</td>
+                </tr>
+                <tr>
+                  <td style="t_date" colspan="4">
+                    <span style="font-size:12px"><el-checkbox v-model="express">
+                      Livraison Express:</el-checkbox> Réception sous 2j dans la limite du stock disponible.
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <el-collapse-transition>
+              <div v-show="express">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td class="t_date">Express (2j) - Masques chirurgicaux</td>
+                      <td class="t_center">
+                        <el-input-number v-model="express_chrg" size="medium" :step="2000" step-strictly :min="0" :max="chrg_max"></el-input-number>
+                      </td>
+                      <td class="t_center">{{priceEXPchrg}}</td>
+                      <td class="t_num">{{expressTotalChrg | currency}}</td>
+                    </tr>
+                    <tr>
+                      <td class="t_date">Express (2j) - Masques FFP2</td>
+                      <td class="t_center">
+                        <el-input-number v-model="express_ffp2" size="medium" :step="600" step-strictly :min="0" :max="ffp2_max"></el-input-number>
+                      </td>
+                      <td class="t_center">{{priceEXPffp2}}</td>
+                      <td class="t_num">{{expressTotalFFP2 | currency}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </el-collapse-transition>
+            <table style="border-bottom: 1px solid rgba(232, 232, 232, 1)">
+              <tbody>
+                <tr>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                  <td style="padding:20px 0 10px"><div class="line"></div></td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td class="t_date t_height"></td>
+                  <td class="t_center t_height">TOTAL HT</td>
+                  <td class="t_num t_height" style="width:40%">
+                    {{total_HT | currency}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="t_date"></td>
+                  <td class="t_center">TOTAL TVA</td>
+                  <td class="t_num">
+                    {{total_TVA | currency}}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="t_date"></td>
+                  <td class="t_center">TOTAL TTC</td>
+                  <td class="t_num t_total" style="width:40%">
+                    {{total_TTC | currency}} EUR
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="c_bottom">
+          <div class="container">
+            <el-form :model="userForm" :rules="userFormRules" ref="userFormRef" class="el_form">
+              <div class="c_button" style="width:100%"><el-button @click.stop.prevent="postForm('userFormRef')" native-type="submit" type="primary" :disabled="isEmpty">Recevoir un autre devis</el-button></div>
+            </el-form>
+          </div>
         </div>
       </div>
     </div>
@@ -434,7 +547,7 @@
 </template>
 
 <script>
-
+import Vue from 'vue'
 export default {
   name: 'FormData',
   data () {
@@ -486,6 +599,9 @@ export default {
       express_ffp2: 600, // 10个10个一加
       express_chrg: 2000, // 50个50个一加
       info: null,
+
+      chrgTime: [0, 0, 1, 1, 1],
+      ffp2Time: [0, 1, 1, 1],
       /* ------------------ */
       // disabled: true,
       // isActive: false,
@@ -724,6 +840,8 @@ export default {
       this.getUser()
     })
   },
+  watch: {
+  },
   methods: {
     getPrice () {
       this.$http.get('info').then((res) => {
@@ -871,12 +989,27 @@ export default {
       }
 
       return str.join(' ')
+    },
+    toggleFFP2(numero) {
+      if(this.ffp2Time[numero] === 0){
+        this.ffp2Time[numero] = 1
+      }else {
+        this.ffp2Time[numero] = 0
+      }
+    },
+    toggleChrg(numero) {
+      if(this.chrgTime[numero] === 0){
+        Vue.set(this.chrgTime, numero, 1)
+      }else {
+        Vue.set(this.chrgTime, numero, 0)
+      }
+      console.log(this.chrgTime[0] == 1)
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .active{
   color:#6ebcc5;
 }
@@ -887,22 +1020,34 @@ export default {
   padding: 2rem 0;
    // align-items: center; Not good practice the container size depends of your content size.
   th,td{
-    padding:10px 3%;
+    padding:10px 2%;
   }
   .t_date{
     text-align: left;
     width: 45%;
   }
+  .t_date_mobile{
+    text-align: left;
+    width: 15%;
+  }
   .t_num{
     text-align: right;
     width: 20%;
+  }
+  .t_num_mobile{
+    text-align: right;
+    width: 30%;
   }
   .t_center{
     text-align: center;
     width: 20%;
   }
+  .t_center_mobile{
+    text-align: center;
+    width: 40%;
+  }
   .t_height{
-    padding:30px 3% 10px;
+    padding:30px 2% 10px;
   }
   .t_total{
     font-size:18px;
@@ -1019,4 +1164,19 @@ h4 {
 .title {
   margin-bottom: 40px;
 }
+
+.noPadding {
+  width:100%;
+
+  /deep/ .el-input__inner {
+    padding-left: 5px !important;
+    padding-right: 35px !important;
+  }
+}
+
+.linkNoDeco{
+  color: #213248 !important;
+  text-decoration: none !important;
+}
+
 </style>

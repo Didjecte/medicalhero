@@ -1,8 +1,9 @@
 <template>
-  <div class="container context_top">
+  <!--这里是之前写的cart里面的data数据-->
+ <div class="container context_top">
     <vue-headful
       title="MedicalHero - Dashboard"
-      />
+    />
     <h1 style="margin:30px 0;">Dashboard Admin</h1>
     <el-button @click="connectQb()" type="success" style="margin:30px 0 20px 0;" v-if="!qbConnect">Connect</el-button>
     <br>

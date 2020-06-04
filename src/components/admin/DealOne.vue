@@ -1,5 +1,8 @@
 <template>
   <div class="container context_top">
+    <vue-headful
+      title="MedicalHero - Dashboard"
+    />
     <h1>Deal</h1>
     <!--
         内置过渡动画

@@ -2,7 +2,7 @@
 展示pdf中标签有<iframe><embed><object>
 ———————————————————————————————————————
 admin1:  didjecte@gmail.com / pumapuma (账号密码)  ——  permission:2
-admin2:  admin@admin.com / admin
+admin2:  admin@admin.com / admin —— permission:2147483647
 更改的东西：
   1.响应式（el-row/el-col响应式）
   2.动画效果transition效果
